@@ -17,5 +17,8 @@
     "svelte": "^4.2.18",
     "tailwindcss": "^3.4.9",
     "vite": "^5.4.1"
+  },
+  "dependencies": {
+    "@tensorflow/tfjs": "^4.21.0"
   }
 }

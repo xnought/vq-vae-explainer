@@ -2,29 +2,28 @@
 	import { Button } from "flowbite-svelte";
 	import { GithubSolid, FilePdfSolid } from "flowbite-svelte-icons";
 
-  const color = "alternative";
+	const color = "alternative";
 </script>
 
 <nav>
 	<div id="inner">
 		<div class="left">
 			<img src="logo.svg" alt="logo" />
-			<span id="title-desc">
-				Interact with a <b>V</b>ector <b>Q</b>uantized <b>V</b>ariational <b>A</b>uto<b>e</b>ncoder
-				(<b>VQ-VAE</b>) in your browser!
-			</span>
+			<!-- <span id="title-desc">
+				Interact with a <b>VQ-VAE</b> in your browser!
+			</span> -->
 		</div>
 		<div class="right">
 			<Button
 				size="xs"
 				href="https://github.com/xnought/vq-vae-explainer"
-        target="_blank"
-        {color}
-        outline
+				target="_blank"
+				{color}
+				outline
 				>Code
 				<GithubSolid size="md" class="ml-1" />
 			</Button>
-      <!--
+			<!--
 			<Button
 				size="xs"
 				href="https://arxiv.org/abs/2409.09011"
@@ -41,7 +40,7 @@
 
 <style>
 	nav {
-    box-shadow: 0px 0px 3px 2px rgba(0,0,0,0.1);
+		box-shadow: 0px 0px 3px 2px rgba(0, 0, 0, 0.1);
 	}
 	#inner {
 		padding: 10px;
@@ -71,4 +70,3 @@
 		cursor: pointer;
 	} */
 </style>
-
