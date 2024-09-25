@@ -25,7 +25,7 @@ function parseNumpyTxt(txt) {
 export async function loadEmbeddings(name = "embeddings_dim16_num32.txt") {
 	const out = await (await fetch(`${filepath}/${name}`)).text();
 	const parsed = parseNumpyTxt(out);
-	return parsed;
+	return tf.tensor(parsed);
 }
 
 export function loadImage(url) {
@@ -56,7 +56,7 @@ function toGrey(d) {
 	return result;
 }
 
-export async function fetchAllImages(urls) {
+export async function loadAllImages(urls) {
 	let result = {};
 	for (let i = 0; i < urls.length; i++) {
 		const url = urls[i];

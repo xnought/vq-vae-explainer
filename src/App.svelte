@@ -2,67 +2,67 @@
 	import "./app.css";
 	import Header from "./lib/Header.svelte";
 	import ImageSelector from "./lib/ImageSelector.svelte";
+	import MnistDigit from "./lib/digit/MnistDigit.svelte";
 
 	import { onDestroy, onMount } from "svelte";
-	import { loadEmbeddings, loadModels } from "./load";
+	import { loadAllImages } from "./load";
 	import * as tf from "@tensorflow/tfjs";
-	import * as tfu from "./tfUtils";
+	import { VQVAE } from "./vectorQuantizer";
 
-	class VectorQuantizer {
-		constructor(embeddings) {
-			this.embeddings = embeddings;
-			this.numEmbed = this.embeddings.shape[1];
-			this.embedDim = this.embeddings.shape[0];
-		}
-		/**
-		 * @param {tf.Tensor} x
-		 */
-		predict(x) {
-			const xShape = x.shape;
-			const features = x.reshape([-1, this.embedDim]);
-
-			// quantization step
-			const idxs = tfu.tfDist(features, this.embeddings).argMin(1);
-			const selectColumns = tf.oneHot(idxs, this.numEmbed);
-			const quantized = tf.matMul(
-				selectColumns,
-				this.embeddings.transpose()
-			);
-
-			return quantized.reshape(xShape);
-		}
-	}
-
+	const inputOutputCanvasSize = 300;
 	const images = [1, 2, 3, 4, 5, 7].map((d) => `images/${d}.png`);
 	let rawImages;
 	let selectedImage = "images/1.png";
+	let inputDigit = Array(784).fill(0);
+	let outputDigit = Array(784).fill(0);
 
-	$: console.log(selectedImage);
+	/** @type {VQVAE}*/
+	let model;
 
 	onMount(async () => {
-		const embeddings = await loadEmbeddings();
-		tf.tidy(() => {
-			const tensorEmbeddings = tf.tensor(embeddings);
-			const vq = new VectorQuantizer(tensorEmbeddings);
-		});
-
-		// tf.tidy(() => {
-		// 	loadModels().then(([encoder, decoder]) => {
-		// 		const input = tf.ones([1, 28, 28, 1]);
-		// 		const out = encoder.predict(input);
-
-		// 		const decInput = tf.ones([1, 7, 7, 16]);
-		// 		const decOut = decoder.predict(decInput);
-
-		// 	});
-		// });
+		rawImages = await loadAllImages(images);
+		rawImages["clear"] = new Float32Array(784).fill(0);
+		model = await VQVAE.load();
 	});
+	onDestroy(() => {
+		model.dispose();
+	});
+
+	function forward() {
+		tf.tidy(() => {
+			const input = tf
+				.tensor(rawImages[selectedImage])
+				.reshape([1, 28, 28, 1]);
+			const recon = model.predict(input);
+			outputDigit = recon.flatten().arraySync();
+		});
+	}
+
+	$: if (rawImages) inputDigit = rawImages[selectedImage];
+	$: if (model && selectedImage) forward();
 </script>
 
 <Header />
 <main class="p-5">
 	<div class="mb-2 flex gap-2 items-center">
 		<ImageSelector imageUrls={images} bind:selectedUrl={selectedImage} />
+	</div>
+	<div class="flex gap-5" id="tool">
+		<div>
+			<MnistDigit
+				data={inputDigit}
+				square={inputOutputCanvasSize}
+				maxVal={1}
+			></MnistDigit>
+		</div>
+		loadAllImages
+		<div>
+			<MnistDigit
+				data={outputDigit}
+				square={inputOutputCanvasSize}
+				maxVal={1}
+			></MnistDigit>
+		</div>
 	</div>
 </main>
 
