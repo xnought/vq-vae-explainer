@@ -8,6 +8,7 @@
 	import { loadAllImages } from "./load";
 	import * as tf from "@tensorflow/tfjs";
 	import { VQVAE } from "./vectorQuantizer";
+	import Features from "./lib/Features.svelte";
 
 	const inputOutputCanvasSize = 300;
 	const images = [1, 2, 3, 4, 5, 7].map((d) => `images/${d}.png`);
@@ -55,7 +56,9 @@
 				maxVal={1}
 			></MnistDigit>
 		</div>
-		loadAllImages
+		<div>
+			<Features width={200} height={200} square={125} />
+		</div>
 		<div>
 			<MnistDigit
 				data={outputDigit}
