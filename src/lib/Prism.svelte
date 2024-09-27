@@ -32,10 +32,7 @@
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<rect
-	{...squareFront}
-	fill={hovering || showPrism ? squareFill : "transparent"}
-	{stroke}
+<g
 	on:mouseenter={() => {
 		if (hoverInteraction) {
 			hovering = true;
@@ -48,33 +45,39 @@
 			mouseleave();
 		}
 	}}
-/>
-<rect {...squareBack} fill="none" {stroke} opacity={0.2} />
+>
+	<rect
+		{...squareFront}
+		fill={hovering || showPrism ? squareFill : "transparent"}
+		{stroke}
+	/>
+	<rect {...squareBack} fill="none" {stroke} opacity={0.2} />
 
-{#if hovering || showPrism}
-	<!-- side panel -->
-	<polygon
-		points="{squareFront.x + square},{squareFront.y} {squareBack.x +
-			square},{squareBack.y} {squareBack.x + square},{squareBack.y +
-			square} {squareFront.x + square}, {squareFront.y + square}"
-		fill={hovering || showPrism ? prismFillDarker : "transparent"}
-		stroke={prismStroke}
-	/>
-	<!-- top panel -->
-	<polygon
-		points="{squareFront.x},{squareFront.y} {squareFront.x +
-			square},{squareFront.y} {squareBack.x +
-			square},{squareBack.y} {squareBack.x}, {squareBack.y}"
-		fill={hovering || showPrism ? prismFill : "transparent"}
-		stroke={prismStroke}
-	/>
-	<!-- left side panel background line -->
-	<line
-		x1={squareFront.x}
-		y1={squareFront.y + square}
-		x2={squareBack.x}
-		y2={squareBack.y + square}
-		stroke={prismStroke}
-		opacity={0.2}
-	/>
-{/if}
+	{#if hovering || showPrism}
+		<!-- side panel -->
+		<polygon
+			points="{squareFront.x + square},{squareFront.y} {squareBack.x +
+				square},{squareBack.y} {squareBack.x + square},{squareBack.y +
+				square} {squareFront.x + square}, {squareFront.y + square}"
+			fill={hovering || showPrism ? prismFillDarker : "transparent"}
+			stroke={prismStroke}
+		/>
+		<!-- top panel -->
+		<polygon
+			points="{squareFront.x},{squareFront.y} {squareFront.x +
+				square},{squareFront.y} {squareBack.x +
+				square},{squareBack.y} {squareBack.x}, {squareBack.y}"
+			fill={hovering || showPrism ? prismFill : "transparent"}
+			stroke={prismStroke}
+		/>
+		<!-- left side panel background line -->
+		<line
+			x1={squareFront.x}
+			y1={squareFront.y + square}
+			x2={squareBack.x}
+			y2={squareBack.y + square}
+			stroke={prismStroke}
+			opacity={0.2}
+		/>
+	{/if}
+</g>
