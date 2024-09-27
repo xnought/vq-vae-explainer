@@ -4,6 +4,8 @@
 	import ImageSelector from "./lib/ImageSelector.svelte";
 	import MnistDigit from "./lib/digit/MnistDigit.svelte";
 	import Codebook from "./lib/Codebook.svelte";
+	import { Button } from "flowbite-svelte";
+	import { TrashBinOutline } from "flowbite-svelte-icons";
 
 	import { onDestroy, onMount } from "svelte";
 	import { loadAllImages } from "./load";
@@ -39,34 +41,19 @@
 		model.dispose();
 	});
 
-	function forward() {
+	function forward(d) {
 		tf.tidy(() => {
-			const input = tf
-				.tensor(rawImages[selectedImage])
-				.reshape([1, 28, 28, 1]);
+			const input = tf.tensor(d).reshape([1, 28, 28, 1]);
 			const recon = model.predict(input);
 
+			inputDigit = input.flatten().arraySync();
 			outputDigit = recon.flatten().arraySync();
 			idxs = model.vq.idxs.reshape([7, 7]).arraySync();
 			features = model.vq.features.arraySync();
 		});
 	}
 
-	$: if (rawImages) inputDigit = rawImages[selectedImage];
-	$: if (model && selectedImage) forward();
-
-	function transposeMatrix(d) {
-		let res = [];
-		console.log(d);
-		for (let i = 0; i < d[0].length; ++i) {
-			let inner = [];
-			for (let j = 0; j < d.length; ++j) {
-				inner.push(d[j][i]);
-			}
-			res.push(inner);
-		}
-		return res;
-	}
+	$: if (model && selectedImage) forward(rawImages[selectedImage]);
 </script>
 
 <Header />
@@ -80,7 +67,20 @@
 				data={inputDigit}
 				square={inputOutputCanvasSize}
 				maxVal={1}
+				enableDrawing
+				onChange={(d) => {
+					forward(d);
+				}}
 			></MnistDigit>
+			<Button
+				class="mt-2"
+				size="xs"
+				color="alternative"
+				on:click={() => {
+					selectedImage = "clear";
+					rawImages = rawImages; // weirdly needed for UI to update;
+				}}><TrashBinOutline class="mr-1" size="sm" /> Clear</Button
+			>
 		</div>
 		<div>
 			<Features width={200} height={200} square={125} />
