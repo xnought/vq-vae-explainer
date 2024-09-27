@@ -28,7 +28,7 @@
 		{#each { length: columns } as _, i}
 			{#if hoveringColumn === i || true}
 				{@const x = w * i}
-				{@const o = hoveringColumn === i ? 1.0 : 0.2}
+				{@const o = hoveringColumn === i ? 1.0 : 0.4}
 				<rect
 					{x}
 					width={w}

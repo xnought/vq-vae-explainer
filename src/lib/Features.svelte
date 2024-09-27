@@ -1,4 +1,5 @@
 <script>
+	import { hovering } from "../stores";
 	import Prism from "./Prism.svelte";
 
 	export let width;
@@ -13,9 +14,6 @@
 	export let H = 7;
 	export let W = 7;
 	export let C = 16;
-
-	export let mouseenter = (i, j) => {};
-	export let mouseleave = () => {};
 
 	const miniSquare = square / H;
 
@@ -33,7 +31,14 @@
 	};
 </script>
 
-<svg {width} {height} {x} {y} style="overflow: visible;">
+<svg
+	{width}
+	{height}
+	{x}
+	{y}
+	style="overflow: visible;"
+	on:mouseleave={() => ($hovering = undefined)}
+>
 	<Prism
 		x1={squareFront.x}
 		y1={squareFront.y}
@@ -65,8 +70,10 @@
 				prismFill="rgb(0,0,0,0.1)"
 				squareFill="rgba(0,0,0,0.1)"
 				hoverInteraction
-				mouseenter={() => mouseenter(i, j)}
-				{mouseleave}
+				mouseenter={() => ($hovering = [i, j])}
+				hovering={$hovering
+					? $hovering[0] === i && $hovering[1] === j
+					: false}
 			/>
 			{#if j === 0}
 				<line {x1} {y1} {x2} {y2} stroke="rgb(0,0,0,0.1)" />
