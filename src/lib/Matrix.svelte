@@ -10,8 +10,8 @@
 	export let columns = data[0].length;
 	export let dataOpacity = 1;
 
-	const w = width / rows;
-	const h = height / columns;
+	const h = height / rows;
+	const w = width / columns;
 
 	/** @type{HTMLCanvasElement}*/
 	let canvasEl;
@@ -50,10 +50,12 @@
 		const hex = colorScales(data, d3.interpolateGreys);
 		for (let i = 0; i < rows; ++i) {
 			for (let j = 0; j < columns; ++j) {
-				const x = i * w;
-				const y = j * h;
+				const x = j * w;
+				const y = i * h;
 				ctx.fillStyle = color(hex(data[i][j]), dataOpacity).toString();
 				ctx.fillRect(x, y, w, h);
+				ctx.fillStyle = "lightgrey";
+				ctx.strokeRect(x, y, w, h);
 			}
 		}
 	}

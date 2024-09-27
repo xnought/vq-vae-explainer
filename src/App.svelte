@@ -10,6 +10,7 @@
 	import * as tf from "@tensorflow/tfjs";
 	import { VQVAE } from "./vectorQuantizer";
 	import Features from "./lib/Features.svelte";
+	import Matrix from "./lib/Matrix.svelte";
 
 	const inputOutputCanvasSize = 300;
 	const images = [1, 2, 3, 4, 5, 7].map((d) => `images/${d}.png`);
@@ -22,6 +23,7 @@
 	let embeddings;
 	let hovering;
 	let idxs;
+	let features;
 
 	/** @type {VQVAE}*/
 	let model;
@@ -45,11 +47,25 @@
 
 			outputDigit = recon.flatten().arraySync();
 			idxs = model.vq.idxs.reshape([7, 7]).arraySync();
+			features = model.vq.features.arraySync();
 		});
 	}
 
 	$: if (rawImages) inputDigit = rawImages[selectedImage];
 	$: if (model && selectedImage) forward();
+
+	function transposeMatrix(d) {
+		let res = [];
+		console.log(d);
+		for (let i = 0; i < d[0].length; ++i) {
+			let inner = [];
+			for (let j = 0; j < d.length; ++j) {
+				inner.push(d[j][i]);
+			}
+			res.push(inner);
+		}
+		return res;
+	}
 </script>
 
 <Header />
@@ -74,10 +90,19 @@
 				mouseleave={() => (hovering = undefined)}
 			/>
 		</div>
+		<div style="width: 140px; height: 20px;">
+			{#if features && hovering}
+				<Matrix
+					data={[features[hovering[0] * 7 + hovering[1]]]}
+					width={140}
+					height={200 / 16}
+				/>
+			{/if}
+		</div>
 		<div>
 			<Codebook
 				width={200}
-				height={100}
+				height={140}
 				{embeddings}
 				hoveringColumn={idxs && hovering
 					? idxs[hovering[0]][hovering[1]]

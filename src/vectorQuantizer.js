@@ -68,6 +68,7 @@ export class VectorQuantizer {
 	predict(x) {
 		const xShape = x.shape;
 		const features = x.reshape([-1, this.embedDim]);
+		this.features = features;
 
 		// quantization step
 		const idxs = tfDist(features, this.embeddings).argMin(1);
