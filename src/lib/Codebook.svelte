@@ -1,8 +1,7 @@
 <script>
-	import { onMount } from "svelte";
-	import * as d3 from "d3";
 	import { codeColors, codeNames } from "../stores";
 	import { color } from "../color";
+	import Matrix from "./Matrix.svelte";
 
 	export let width;
 	export let height;
@@ -15,59 +14,9 @@
 
 	const w = width / rows;
 	const h = height / columns;
-
-	/** @type{HTMLCanvasElement}*/
-	let canvasEl;
-	/** @type{CanvasRenderingContext2D}*/
-	let ctx;
-	onMount(() => {
-		ctx = canvasEl.getContext("2d");
-	});
-
-	/**
-	 * @param {number[][]} data
-	 */
-	function colorScales(data, colorInterpolate) {
-		let min = data[0][0];
-		let max = min;
-		for (let i = 0; i < rows; ++i) {
-			for (let j = 0; j < columns; ++j) {
-				const d = data[i][j];
-				if (d < min) {
-					min = d;
-				}
-				if (d > max) {
-					max = d;
-				}
-			}
-		}
-
-		const scale = d3.scaleLinear().domain([min, max]).range([0, 1]);
-		return (c) => {
-			const rescaled = scale(c);
-			return colorInterpolate(rescaled);
-		};
-	}
-
-	/**
-	 * @param {number[][]} data
-	 */
-	function drawData(data) {
-		const hex = colorScales(embeddings, d3.interpolateGreys);
-		for (let i = 0; i < rows; ++i) {
-			for (let j = 0; j < columns; ++j) {
-				const x = i * w;
-				const y = j * h;
-				ctx.fillStyle = color(hex(data[i][j]), 0.4).toString();
-				ctx.fillRect(x, y, w, h);
-			}
-		}
-	}
-
-	$: if (ctx && embeddings) drawData(embeddings);
 </script>
 
-<div style="position: relative;">
+<div style="position: relative; width: {width}px; height: {height}px;">
 	<svg
 		{width}
 		{height}
@@ -99,7 +48,9 @@
 			{/if}
 		{/each}
 	</svg>
-	<canvas bind:this={canvasEl} {width} {height} />
+	{#if embeddings}
+		<Matrix {width} {height} data={embeddings} />
+	{/if}
 </div>
 
 <style>
