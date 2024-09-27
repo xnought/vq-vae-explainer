@@ -3,6 +3,7 @@
 	import Header from "./lib/Header.svelte";
 	import ImageSelector from "./lib/ImageSelector.svelte";
 	import MnistDigit from "./lib/digit/MnistDigit.svelte";
+	import Codebook from "./lib/Codebook.svelte";
 
 	import { onDestroy, onMount } from "svelte";
 	import { loadAllImages } from "./load";
@@ -14,8 +15,13 @@
 	const images = [1, 2, 3, 4, 5, 7].map((d) => `images/${d}.png`);
 	let rawImages;
 	let selectedImage = "images/1.png";
+
+	// global model data
 	let inputDigit = Array(784).fill(0);
 	let outputDigit = Array(784).fill(0);
+	let embeddings;
+	let hovering;
+	let idxs;
 
 	/** @type {VQVAE}*/
 	let model;
@@ -24,6 +30,7 @@
 		rawImages = await loadAllImages(images);
 		rawImages["clear"] = new Float32Array(784).fill(0);
 		model = await VQVAE.load();
+		embeddings = model.vq.embeddings.arraySync();
 	});
 	onDestroy(() => {
 		model.dispose();
@@ -35,8 +42,9 @@
 				.tensor(rawImages[selectedImage])
 				.reshape([1, 28, 28, 1]);
 			const recon = model.predict(input);
+
 			outputDigit = recon.flatten().arraySync();
-			console.log(model.vq.idxs);
+			idxs = model.vq.idxs.reshape([7, 7]).arraySync();
 		});
 	}
 
@@ -62,7 +70,18 @@
 				width={200}
 				height={200}
 				square={125}
-				mouseenter={(i, j) => console.log(i, j)}
+				mouseenter={(i, j) => (hovering = [i, j])}
+				mouseleave={() => (hovering = undefined)}
+			/>
+		</div>
+		<div>
+			<Codebook
+				width={200}
+				height={100}
+				{embeddings}
+				hoveringColumn={idxs && hovering
+					? idxs[hovering[0]][hovering[1]]
+					: undefined}
 			/>
 		</div>
 		<div>
