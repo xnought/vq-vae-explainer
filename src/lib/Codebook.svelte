@@ -1,6 +1,8 @@
 <script>
 	import { onMount } from "svelte";
 	import * as d3 from "d3";
+	import { codeColors, codeNames } from "../stores";
+	import { color } from "../color";
 
 	export let width;
 	export let height;
@@ -10,13 +12,6 @@
 	export let rows = 16;
 	export let columns = 16;
 	export let hoveringColumn = undefined;
-	export let showAllCodes = false;
-	// export let codeColors = d3.schemeTableau10.concat(d3.schemeCategory10);
-	export let codeColors = generateDiscreteColors(
-		columns,
-		d3.interpolatePlasma
-	);
-	export let codeNames = "0123456789ABCDEF";
 
 	const w = width / rows;
 	const h = height / columns;
@@ -27,8 +22,6 @@
 	let ctx;
 	onMount(() => {
 		ctx = canvasEl.getContext("2d");
-		console.log(canvasEl.width);
-		console.log(canvasEl.height);
 	});
 
 	/**
@@ -56,36 +49,19 @@
 		};
 	}
 
-	function generateDiscreteColors(n, interp) {
-		let out = Array(n);
-		const s = d3
-			.scaleLinear()
-			.domain([0, n - 1])
-			.range([0, 1]);
-		for (let i = 0; i < n; i++) {
-			out[i] = interp(s(i));
-		}
-		return out;
-	}
-
 	/**
 	 * @param {number[][]} data
 	 */
 	function drawData(data) {
-		const color = colorScales(embeddings, d3.interpolateGreys);
+		const hex = colorScales(embeddings, d3.interpolateGreys);
 		for (let i = 0; i < rows; ++i) {
 			for (let j = 0; j < columns; ++j) {
 				const x = i * w;
 				const y = j * h;
-				ctx.fillStyle = color(data[i][j]);
+				ctx.fillStyle = color(hex(data[i][j]), 0.4).toString();
 				ctx.fillRect(x, y, w, h);
 			}
 		}
-	}
-	function color(c, alpha = 1) {
-		const d3c = d3.color(c);
-		d3c.opacity = alpha;
-		return d3c;
 	}
 
 	$: if (ctx && embeddings) drawData(embeddings);
