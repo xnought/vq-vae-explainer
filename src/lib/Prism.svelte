@@ -13,6 +13,9 @@
 	export let squareFill = prismFill;
 	export let showPrism = false;
 
+	export let mouseenter = () => {};
+	export let mouseleave = () => {};
+
 	const squareFront = {
 		x: x1,
 		y: y1,
@@ -36,11 +39,13 @@
 	on:mouseenter={() => {
 		if (hoverInteraction) {
 			hovering = true;
+			mouseenter();
 		}
 	}}
 	on:mouseleave={() => {
 		if (hoverInteraction) {
 			hovering = false;
+			mouseleave();
 		}
 	}}
 />

@@ -22,7 +22,7 @@ function parseNumpyTxt(txt) {
 	return result;
 }
 
-export async function loadEmbeddings(name = "embeddings_dim16_num32.txt") {
+export async function loadEmbeddings(name = "embeddings_dim16_num16.txt") {
 	const out = await (await fetch(`${filepath}/${name}`)).text();
 	const parsed = parseNumpyTxt(out);
 	return tf.tensor(parsed);

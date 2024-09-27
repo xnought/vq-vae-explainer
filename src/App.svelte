@@ -36,6 +36,7 @@
 				.reshape([1, 28, 28, 1]);
 			const recon = model.predict(input);
 			outputDigit = recon.flatten().arraySync();
+			console.log(model.vq.idxs);
 		});
 	}
 
@@ -57,7 +58,12 @@
 			></MnistDigit>
 		</div>
 		<div>
-			<Features width={200} height={200} square={125} />
+			<Features
+				width={200}
+				height={200}
+				square={125}
+				mouseenter={(i, j) => console.log(i, j)}
+			/>
 		</div>
 		<div>
 			<MnistDigit

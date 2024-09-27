@@ -71,6 +71,8 @@ export class VectorQuantizer {
 
 		// quantization step
 		const idxs = tfDist(features, this.embeddings).argMin(1);
+		this.idxs = idxs.arraySync();
+
 		const selectColumns = tf.oneHot(idxs, this.numEmbed);
 		const quantized = tf.matMul(selectColumns, this.embeddings.transpose());
 

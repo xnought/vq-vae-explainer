@@ -14,6 +14,9 @@
 	export let W = 7;
 	export let C = 16;
 
+	export let mouseenter = (i, j) => {};
+	export let mouseleave = () => {};
+
 	const miniSquare = square / H;
 
 	const squareFront = {
@@ -62,6 +65,8 @@
 				prismFill="rgb(0,0,0,0.1)"
 				squareFill="rgba(0,0,0,0.1)"
 				hoverInteraction
+				mouseenter={() => mouseenter(i, j)}
+				{mouseleave}
 			/>
 			{#if j === 0}
 				<line {x1} {y1} {x2} {y2} stroke="rgb(0,0,0,0.1)" />
