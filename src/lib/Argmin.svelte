@@ -44,7 +44,7 @@
 				height={h}
 				fill={codeColors[argmin[i]]}
 				stroke="black"
-				opacity={iHover === i ? 1 : 0.2}
+				opacity={iHover === i || $hovering === undefined ? 1 : 0.2}
 				on:mouseenter={() => ($hovering = unmapI2(i))}
 			/>
 		{/each}
