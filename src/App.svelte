@@ -17,6 +17,7 @@
 	import { hovering } from "./stores";
 	import FeaturesReshape from "./lib/FeaturesReshape.svelte";
 	import Pairwise from "./lib/Pairwise.svelte";
+	import Argmin from "./lib/Argmin.svelte";
 
 	const inputOutputCanvasSize = 300;
 	const images = [1, 2, 3, 4, 5, 7].map((d) => `images/${d}.png`);
@@ -30,6 +31,7 @@
 	let idxs;
 	let features;
 	let distances;
+	let argmin;
 
 	/** @type {VQVAE}*/
 	let model;
@@ -54,6 +56,7 @@
 			idxs = model.vq.idxs.reshape([7, 7]).arraySync();
 			features = model.vq.features.arraySync();
 			distances = model.vq.distances.arraySync();
+			argmin = model.vq.idxs.arraySync();
 		});
 	}
 
@@ -125,6 +128,12 @@
 		<div>
 			{#if distances}
 				<Pairwise {distances} width={250} height={300} />
+			{/if}
+		</div>
+
+		<div>
+			{#if argmin}
+				<Argmin {argmin} />
 			{/if}
 		</div>
 
