@@ -16,6 +16,7 @@
 	import Quantized from "./lib/Quantized.svelte";
 	import { hovering } from "./stores";
 	import FeaturesReshape from "./lib/FeaturesReshape.svelte";
+	import Pairwise from "./lib/Pairwise.svelte";
 
 	const inputOutputCanvasSize = 300;
 	const images = [1, 2, 3, 4, 5, 7].map((d) => `images/${d}.png`);
@@ -28,6 +29,7 @@
 	let embeddings;
 	let idxs;
 	let features;
+	let distances;
 
 	/** @type {VQVAE}*/
 	let model;
@@ -51,6 +53,7 @@
 			outputDigit = recon.flatten().arraySync();
 			idxs = model.vq.idxs.reshape([7, 7]).arraySync();
 			features = model.vq.features.arraySync();
+			distances = model.vq.distances.arraySync();
 		});
 	}
 
@@ -116,6 +119,11 @@
 					<Quantized width={150} height={150} {idxs} />
 				{/if}
 			</div>
+		</div>
+		<div>
+			{#if distances}
+				<Pairwise {distances} />
+			{/if}
 		</div>
 
 		<div>

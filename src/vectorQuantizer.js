@@ -71,7 +71,9 @@ export class VectorQuantizer {
 		this.features = features;
 
 		// quantization step
-		const idxs = tfDist(features, this.embeddings).argMin(1);
+		const distances = tfDist(features, this.embeddings);
+		this.distances = distances;
+		const idxs = distances.argMin(1);
 		this.idxs = idxs;
 
 		const selectColumns = tf.oneHot(idxs, this.numEmbed);
