@@ -15,6 +15,7 @@
 	import Matrix from "./lib/Matrix.svelte";
 	import Quantized from "./lib/Quantized.svelte";
 	import { hovering } from "./stores";
+	import FeaturesReshape from "./lib/FeaturesReshape.svelte";
 
 	const inputOutputCanvasSize = 300;
 	const images = [1, 2, 3, 4, 5, 7].map((d) => `images/${d}.png`);
@@ -93,6 +94,11 @@
 					/>
 				{/if}
 			</div>
+		</div>
+		<div>
+			{#if features}
+				<FeaturesReshape {features} />
+			{/if}
 		</div>
 		<div>
 			<div>

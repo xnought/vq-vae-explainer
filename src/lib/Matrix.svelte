@@ -9,9 +9,12 @@
 	export let rows = data.length;
 	export let columns = data[0].length;
 	export let dataOpacity = 1;
+	export let scale = colorScales(data, [-0.05, 0.05]);
+	export let interp = d3.interpolateGreys;
 
-	const h = height / rows;
-	const w = width / columns;
+	// just to propagate upwards
+	export let h = height / rows;
+	export let w = width / columns;
 
 	/** @type{HTMLCanvasElement}*/
 	let canvasEl;
@@ -24,30 +27,30 @@
 	/**
 	 * @param {number[][]} data
 	 */
-	function colorScales(data, colorInterpolate) {
-		let min = data[0][0];
-		let max = min;
-		for (let i = 0; i < rows; ++i) {
-			for (let j = 0; j < columns; ++j) {
-				const d = data[i][j];
-				if (d < min) {
-					min = d;
-				}
-				if (d > max) {
-					max = d;
+	function colorScales(data, fixed) {
+		if (fixed === undefined) {
+			let min = data[0][0];
+			let max = min;
+			for (let i = 0; i < rows; ++i) {
+				for (let j = 0; j < columns; ++j) {
+					const d = data[i][j];
+					if (d < min) {
+						min = d;
+					}
+					if (d > max) {
+						max = d;
+					}
 				}
 			}
+			const scale = d3.scaleLinear().domain([min, max]).range([0, 1]);
+			return scale;
+		} else {
+			return d3.scaleLinear().domain(fixed).range([0, 1]);
 		}
-
-		const scale = d3.scaleLinear().domain([min, max]).range([0, 1]);
-		return (c) => {
-			const rescaled = scale(c);
-			return colorInterpolate(rescaled);
-		};
 	}
 
 	function drawData() {
-		const hex = colorScales(data, d3.interpolateGreys);
+		const hex = (x) => interp(scale(x));
 		for (let i = 0; i < rows; ++i) {
 			for (let j = 0; j < columns; ++j) {
 				const x = j * w;
