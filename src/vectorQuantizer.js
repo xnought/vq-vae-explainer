@@ -68,16 +68,19 @@ export class VectorQuantizer {
 	predict(x) {
 		const xShape = x.shape;
 		const features = x.reshape([-1, this.embedDim]);
-		this.features = features;
 
 		// quantization step
 		const distances = tfDist(features, this.embeddings);
-		this.distances = distances;
 		const idxs = distances.argMin(1);
-		this.idxs = idxs;
 
 		const selectColumns = tf.oneHot(idxs, this.numEmbed);
 		const quantized = tf.matMul(selectColumns, this.embeddings.transpose());
+
+		// save these so I can use later for visualizations
+		this.features = features;
+		this.distances = distances;
+		this.idxs = idxs;
+		this.quantized = quantized;
 
 		return quantized.reshape(xShape);
 	}

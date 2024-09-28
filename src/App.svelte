@@ -18,6 +18,7 @@
 	import FeaturesReshape from "./lib/FeaturesReshape.svelte";
 	import Pairwise from "./lib/Pairwise.svelte";
 	import Argmin from "./lib/Argmin.svelte";
+	import SelectEmbed from "./lib/SelectEmbed.svelte";
 
 	const inputOutputCanvasSize = 300;
 	const images = [1, 2, 3, 4, 5, 7].map((d) => `images/${d}.png`);
@@ -32,6 +33,7 @@
 	let features;
 	let distances;
 	let argmin;
+	let quantized;
 
 	/** @type {VQVAE}*/
 	let model;
@@ -57,10 +59,13 @@
 			features = model.vq.features.arraySync();
 			distances = model.vq.distances.arraySync();
 			argmin = model.vq.idxs.arraySync();
+			quantized = model.vq.quantized.arraySync();
 		});
 	}
 
 	$: if (model && selectedImage) forward(rawImages[selectedImage]);
+	let featuresWidth = 150;
+	let featuresHeight = 300;
 </script>
 
 <Header />
@@ -103,7 +108,11 @@
 		</div>
 		<div>
 			{#if features}
-				<FeaturesReshape {features} height={300} />
+				<FeaturesReshape
+					{features}
+					width={featuresWidth}
+					height={featuresHeight}
+				/>
 			{/if}
 		</div>
 		<div>
@@ -127,13 +136,23 @@
 		</div>
 		<div>
 			{#if distances}
-				<Pairwise {distances} width={250} height={300} />
+				<Pairwise {distances} width={250} height={featuresHeight} />
 			{/if}
 		</div>
 
 		<div>
 			{#if argmin}
-				<Argmin {argmin} />
+				<Argmin {argmin} height={featuresHeight} />
+			{/if}
+		</div>
+		<div>
+			{#if quantized}
+				<SelectEmbed
+					{quantized}
+					{argmin}
+					width={featuresWidth}
+					height={featuresHeight}
+				/>
 			{/if}
 		</div>
 
