@@ -1,6 +1,7 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap");
 
 :root {
 	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -15,6 +16,16 @@
 
 body {
 	margin: 0;
+	background: hsl(235, 28%, 9%);
+	color: white;
+}
+text {
+	fill: white;
+}
+
+.code {
+	font-family: "Fira Code", monospace;
+	font-optical-sizing: auto;
 }
 
 svg text {

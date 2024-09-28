@@ -8,10 +8,14 @@
 <nav>
 	<div id="inner">
 		<div class="left">
-			<img src="logo.svg" alt="logo" />
-			<!-- <span id="title-desc">
-				Interact with a <b>VQ-VAE</b> in your browser!
-			</span> -->
+			<img src="logo.svg" alt="logo" width="250" />
+			<span
+				id="title-desc"
+				style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"
+			>
+				Interact with a <b>Vector Quantized Variational Autoencoder</b> right
+				in your browser!
+			</span>
 		</div>
 		<div class="right">
 			<Button
@@ -40,7 +44,7 @@
 
 <style>
 	nav {
-		box-shadow: 0px 0px 3px 2px rgba(0, 0, 0, 0.1);
+		background: black;
 	}
 	#inner {
 		padding: 10px;

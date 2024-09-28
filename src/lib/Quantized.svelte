@@ -39,10 +39,10 @@
 				<rect {x} {y} width={w} height={h} fill={c} />G
 				{#if isHovering}
 					<text
+						class="code"
 						x={x + w / 2}
 						y={y + h / 2 + 5}
 						text-anchor="middle"
-						style="font-family: menlo;"
 						fill={"black"}>{codeNames[idx]}</text
 					>
 				{/if}

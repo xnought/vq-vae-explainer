@@ -39,9 +39,12 @@
 						stroke-width={2}
 					/>
 					<text
+						class="code"
 						x={x + w / 2}
 						y={height + 13}
 						fill={codeColors[i]}
+						style="fill: {codeColors[i]}"
+						stroke={hoveringColumn === i ? codeColors[i] : "none"}
 						opacity={o}
 						text-anchor="middle">{codeNames[i]}</text
 					>
@@ -54,7 +57,6 @@
 
 <style>
 	text {
-		font-family: menlo;
 		font-size: 12px;
 	}
 </style>

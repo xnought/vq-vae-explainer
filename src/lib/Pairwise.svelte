@@ -46,8 +46,10 @@
 					y={i * h}
 					{width}
 					height={h}
-					fill={iHover === i ? "red" : "transparent"}
-					opacity={0.5}
+					fill={iHover === i ? "white" : "transparent"}
+					stroke={iHover === i ? "white" : "transparent"}
+					fill-opacity={0.3}
+					stroke-width={2}
 					on:mouseenter={() => ($hovering = unmapI2(i))}
 				/>
 			{/each}

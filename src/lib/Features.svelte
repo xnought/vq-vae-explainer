@@ -1,4 +1,5 @@
 <script>
+	import { color } from "../color";
 	import { hovering } from "../stores";
 	import Prism from "./Prism.svelte";
 
@@ -29,6 +30,8 @@
 		width: square,
 		height: square,
 	};
+	const prismColor = "rgba(255,255,255,0.4)";
+	const bgPrismColor = "rgba(255,255,255,0.05)";
 </script>
 
 <svg
@@ -44,10 +47,10 @@
 		y1={squareFront.y}
 		x2={squareBack.x}
 		y2={squareBack.y}
-		prismFill="rgba(0,0,0,0.05)"
-		prismFillDarker="rgba(0,0,0,0.1)"
+		prismFill={bgPrismColor}
+		prismFillDarker={color(prismColor, 0.2).toString()}
 		{square}
-		squareFill="rgba(0,0,0,0.05)"
+		squareFill={bgPrismColor}
 		showPrism
 		stroke="lightgrey"
 		prismStroke="lightgrey"
@@ -65,10 +68,10 @@
 				{y1}
 				{y2}
 				square={miniSquare}
-				stroke="rgba(0,0,0,0.1)"
-				prismStroke="rgba(0,0,0,0.1)"
-				prismFill="rgb(0,0,0,0.1)"
-				squareFill="rgba(0,0,0,0.1)"
+				stroke={prismColor}
+				prismStroke={prismColor}
+				prismFill={prismColor}
+				squareFill={prismColor}
 				hoverInteraction
 				mouseenter={() => ($hovering = [i, j])}
 				hovering={$hovering
@@ -76,7 +79,7 @@
 					: false}
 			/>
 			{#if j === 0}
-				<line {x1} {y1} {x2} {y2} stroke="rgb(0,0,0,0.1)" />
+				<line {x1} {y1} {x2} {y2} stroke={prismColor} />
 			{/if}
 			{#if i === W - 1}
 				<line
@@ -84,7 +87,7 @@
 					{y1}
 					x2={x2 + miniSquare}
 					{y2}
-					stroke="rgb(0,0,0,0.1)"
+					stroke={prismColor}
 				/>
 			{/if}
 		{/each}

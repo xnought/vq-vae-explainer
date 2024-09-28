@@ -43,10 +43,10 @@
 					}
 				}
 			}
-			const scale = d3.scaleLinear().domain([min, max]).range([0, 1]);
+			const scale = d3.scaleLinear().domain([min, max]).range([1, 0]);
 			return scale;
 		} else {
-			return d3.scaleLinear().domain(fixed).range([0, 1]);
+			return d3.scaleLinear().domain(fixed).range([1, 0]);
 		}
 	}
 
