@@ -8,12 +8,11 @@
 	export let x = 0;
 	export let y = 0;
 	export let embeddings;
-	export let rows = 16;
-	export let columns = 16;
 	export let hoveringColumn = undefined;
 
-	const w = width / rows;
-	const h = height / columns;
+	$: rows = embeddings.length;
+	$: columns = embeddings[0].length;
+	let w, h;
 </script>
 
 <div style="position: relative; width: {width}px; height: {height}px;">
@@ -25,32 +24,32 @@
 		style="position: absolute; left: 0; top: 0; overflow: visible;"
 	>
 		<rect {width} {height} fill="none" stroke="black" />
-		{#each { length: columns } as _, i}
-			{#if hoveringColumn === i || true}
-				{@const x = w * i}
-				{@const o = hoveringColumn === i ? 1.0 : 0.4}
-				<rect
-					{x}
-					width={w}
-					{height}
-					fill={color(codeColors[i], 0.6).toString()}
-					stroke={codeColors[i]}
-					opacity={o}
-					stroke-width={2}
-				/>
-				<text
-					x={x + w / 2}
-					y={height + 13}
-					fill={codeColors[i]}
-					opacity={o}
-					text-anchor="middle">{codeNames[i]}</text
-				>
-			{/if}
-		{/each}
+		{#if w && h}
+			{#each { length: columns } as _, i}
+				{#if hoveringColumn === i || true}
+					{@const x = w * i}
+					{@const o = hoveringColumn === i ? 1.0 : 0.4}
+					<rect
+						{x}
+						width={w}
+						{height}
+						fill={color(codeColors[i], 0.6).toString()}
+						stroke={codeColors[i]}
+						opacity={o}
+						stroke-width={2}
+					/>
+					<text
+						x={x + w / 2}
+						y={height + 13}
+						fill={codeColors[i]}
+						opacity={o}
+						text-anchor="middle">{codeNames[i]}</text
+					>
+				{/if}
+			{/each}
+		{/if}
 	</svg>
-	{#if embeddings}
-		<Matrix {width} {height} data={embeddings} />
-	{/if}
+	<Matrix {width} {height} data={embeddings} bind:w bind:h />
 </div>
 
 <style>

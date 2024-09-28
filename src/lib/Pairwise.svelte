@@ -3,8 +3,8 @@
 	import { hovering } from "../stores";
 
 	export let distances;
-	const width = 200;
-	const height = 500;
+	export let width = 200;
+	export let height = 500;
 
 	function mapI(x, y) {
 		const s = 7;

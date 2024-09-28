@@ -2,6 +2,9 @@ import * as tf from "@tensorflow/tfjs";
 
 const filepath = "tfjs";
 
+export const numEmbed = 20;
+export const embedDim = 16;
+
 export async function loadModels() {
 	const encoder = await tf.loadGraphModel(`${filepath}/encoder/model.json`);
 	const decoder = await tf.loadGraphModel(`${filepath}/decoder/model.json`);
@@ -22,7 +25,8 @@ function parseNumpyTxt(txt) {
 	return result;
 }
 
-export async function loadEmbeddings(name = "embeddings_dim16_num16.txt") {
+export async function loadEmbeddings() {
+	const name = `embeddings_dim${embedDim}_num${numEmbed}.txt`;
 	const out = await (await fetch(`${filepath}/${name}`)).text();
 	const parsed = parseNumpyTxt(out);
 	return tf.tensor(parsed);

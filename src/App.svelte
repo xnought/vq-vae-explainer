@@ -100,19 +100,21 @@
 		</div>
 		<div>
 			{#if features}
-				<FeaturesReshape {features} />
+				<FeaturesReshape {features} height={300} />
 			{/if}
 		</div>
 		<div>
 			<div>
-				<Codebook
-					width={200}
-					height={140}
-					{embeddings}
-					hoveringColumn={idxs && $hovering
-						? idxs[$hovering[0]][$hovering[1]]
-						: undefined}
-				/>
+				{#if embeddings}
+					<Codebook
+						width={250}
+						height={150}
+						{embeddings}
+						hoveringColumn={idxs && $hovering
+							? idxs[$hovering[0]][$hovering[1]]
+							: undefined}
+					/>
+				{/if}
 			</div>
 			<div class="mt-20">
 				{#if idxs}
@@ -122,7 +124,7 @@
 		</div>
 		<div>
 			{#if distances}
-				<Pairwise {distances} />
+				<Pairwise {distances} width={250} height={300} />
 			{/if}
 		</div>
 
