@@ -10,6 +10,13 @@
 		const s = 7;
 		return x * s + y;
 	}
+	function unmapI2(i) {
+		const s = 7;
+		const y = i % s;
+		const x = (i - y) / s;
+		return [x, y];
+	}
+
 	function unmapI(i) {
 		const s = 7;
 		for (let x = 0; x < s; ++x) {
@@ -41,7 +48,7 @@
 					height={h}
 					fill={iHover === i ? "red" : "transparent"}
 					opacity={0.5}
-					on:mouseenter={() => ($hovering = unmapI(i))}
+					on:mouseenter={() => ($hovering = unmapI2(i))}
 				/>
 			{/each}
 		{/if}
