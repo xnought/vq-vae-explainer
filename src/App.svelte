@@ -20,6 +20,7 @@
 	import Argmin from "./lib/Argmin.svelte";
 	import SelectEmbed from "./lib/SelectEmbed.svelte";
 	import Sankey from "./lib/Sankey.svelte";
+	import Prism from "./lib/Prism.svelte";
 
 	const inputOutputCanvasSize = 300;
 	const images = [1, 2, 3, 4, 5, 7].map((d) => `images/${d}.png`);
@@ -67,20 +68,32 @@
 	$: if (model && selectedImage) forward(rawImages[selectedImage]);
 	let featuresWidth = 150;
 	let featuresHeight = 300;
+	let codebookWidth = 250;
+	let codebookHeight = 150;
+	let prismSquare = 150;
+	let prismSmallerSquare = 100;
 
 	// svg positioning
 	$: inputX = 0;
-	$: inputEncoderGap = 30;
+	$: inputEncoderGap = 10;
 
 	$: encoderX = inputX + inputOutputCanvasSize + inputEncoderGap;
 	$: encoderInHeight = inputOutputCanvasSize;
-	$: encoderOutHeight = inputOutputCanvasSize / 2;
+	$: encoderOutHeight = prismSquare;
 	$: encoderWidth = 100;
 	$: encoderOutX = encoderX + encoderWidth;
-	$: encoderOutY = inputOutputCanvasSize / 4;
-	$: middleGap = 300;
+	$: encoderOutY = inputOutputCanvasSize - 75;
 
-	$: decoderX = middleGap + encoderOutX;
+	$: inPrismX = encoderOutX + inputEncoderGap;
+	$: inPrismY = encoderOutY;
+
+	$: codebookX = inPrismX + prismSquare + inputEncoderGap;
+	$: codebookY = 0;
+
+	$: outPrismX = codebookX + codebookWidth + inputEncoderGap;
+	$: outPrismY = inPrismY;
+
+	$: decoderX = outPrismX + prismSquare + inputEncoderGap;
 	$: decoderY = encoderOutY;
 	$: decoderInHeight = encoderOutHeight;
 	$: decoderOutHeight = encoderInHeight;
@@ -130,7 +143,7 @@
 		<g id="encoder">
 			<text
 				x={encoderX + encoderWidth / 2}
-				y={inputOutputCanvasSize / 2}
+				y={encoderOutY + prismSmallerSquare / 2}
 				text-anchor="middle"
 				style="fill: {sankeyColors.stroke}"
 				class="code">Encoder</text
@@ -144,10 +157,49 @@
 			/>
 		</g>
 
+		<Features
+			x={inPrismX}
+			y={inPrismY}
+			width={prismSquare}
+			height={prismSquare}
+			square={prismSmallerSquare}
+		/>
+
+		<foreignObject x={codebookX} y={codebookY} width={250} height={150}>
+			{#if embeddings}
+				<Codebook
+					width={250}
+					height={150}
+					{embeddings}
+					hoveringColumn={idxs && $hovering
+						? idxs[$hovering[0]][$hovering[1]]
+						: undefined}
+				/>
+			{/if}
+		</foreignObject>
+
+		{#if idxs}
+			<Quantized
+				x={codebookX + codebookWidth / 2 - 150 / 2}
+				y={codebookY + 150 + 50}
+				width={150}
+				height={150}
+				{idxs}
+			/>
+		{/if}
+
+		<Features
+			x={outPrismX}
+			y={outPrismY}
+			width={prismSquare}
+			height={prismSquare}
+			square={prismSmallerSquare}
+		/>
+
 		<g id="decoder">
 			<text
 				x={decoderX + encoderWidth / 2}
-				y={inputOutputCanvasSize / 2}
+				y={encoderOutY + prismSmallerSquare / 2}
 				style="fill: {sankeyColors.stroke}"
 				text-anchor="middle"
 				class="code">Decoder</text

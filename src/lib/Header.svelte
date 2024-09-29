@@ -8,13 +8,13 @@
 <nav>
 	<div id="inner">
 		<div class="left">
-			<img src="logo.svg" alt="logo" width="250" />
+			<img src="logo.svg" alt="logo" width="225" />
 			<span
 				id="title-desc"
 				style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"
 			>
-				Interact with a <b>Vector Quantized Variational Autoencoder</b> right
-				in your browser!
+				Interact with a <b>V</b>ector <b>Q</b>uantized
+				<b>V</b>ariational <b>A</b>uto<b>e</b>ncoder in your browser!
 			</span>
 		</div>
 		<div class="right">
