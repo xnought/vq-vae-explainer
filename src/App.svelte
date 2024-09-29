@@ -14,13 +14,14 @@
 	import Features from "./lib/Features.svelte";
 	import Matrix from "./lib/Matrix.svelte";
 	import Quantized from "./lib/Quantized.svelte";
-	import { hovering } from "./stores";
+	import { codeColors, hovering } from "./stores";
 	import FeaturesReshape from "./lib/FeaturesReshape.svelte";
 	import Pairwise from "./lib/Pairwise.svelte";
 	import Argmin from "./lib/Argmin.svelte";
 	import SelectEmbed from "./lib/SelectEmbed.svelte";
 	import Sankey from "./lib/Sankey.svelte";
 	import Prism from "./lib/Prism.svelte";
+	import { color } from "./color";
 
 	const inputOutputCanvasSize = 300;
 	const images = [1, 2, 3, 4, 5, 7].map((d) => `images/${d}.png`);
@@ -63,6 +64,18 @@
 			argmin = model.vq.idxs.arraySync();
 			quantized = model.vq.quantized.arraySync();
 		});
+	}
+
+	function grabColorsForOutFeatures(idxs) {
+		let result = [];
+		for (let i = 0; i < idxs.length; ++i) {
+			let sub = [];
+			for (let j = 0; j < idxs[0].length; ++j) {
+				sub.push(color(codeColors[idxs[i][j]], 0.5).toString());
+			}
+			result.push(sub);
+		}
+		return result;
 	}
 
 	$: if (model && selectedImage) forward(rawImages[selectedImage]);
@@ -188,13 +201,16 @@
 			/>
 		{/if}
 
-		<Features
-			x={outPrismX}
-			y={outPrismY}
-			width={prismSquare}
-			height={prismSquare}
-			square={prismSmallerSquare}
-		/>
+		{#if idxs}
+			<Features
+				x={outPrismX}
+				y={outPrismY}
+				width={prismSquare}
+				height={prismSquare}
+				square={prismSmallerSquare}
+				colorOverrides={grabColorsForOutFeatures(idxs)}
+			/>
+		{/if}
 
 		<g id="decoder">
 			<text

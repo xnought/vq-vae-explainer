@@ -11,6 +11,7 @@
 	export let square = 115;
 	export let strokeWidth = 2;
 	export let opacity = 0.1;
+	export let colorOverrides = undefined;
 
 	export let H = 7;
 	export let W = 7;
@@ -62,16 +63,18 @@
 		{#each { length: W } as _, j}
 			{@const y1 = squareFront.y + j * miniSquare}
 			{@const y2 = squareBack.y + j * miniSquare}
+			{@const c = !colorOverrides ? prismColor : colorOverrides[i][j]}
 			<Prism
 				{x1}
 				{x2}
 				{y1}
 				{y2}
 				square={miniSquare}
-				stroke={prismColor}
-				prismStroke={prismColor}
-				prismFill={prismColor}
-				squareFill={prismColor}
+				stroke={c}
+				prismStroke={c}
+				prismFill={c}
+				squareFill={c}
+				prismFillDarker={c}
 				hoverInteraction
 				mouseenter={() => ($hovering = [i, j])}
 				hovering={$hovering
@@ -79,7 +82,7 @@
 					: false}
 			/>
 			{#if j === 0}
-				<line {x1} {y1} {x2} {y2} stroke={prismColor} />
+				<line {x1} {y1} {x2} {y2} stroke={c} />
 			{/if}
 			{#if i === W - 1}
 				<line
@@ -87,7 +90,7 @@
 					{y1}
 					x2={x2 + miniSquare}
 					{y2}
-					stroke={prismColor}
+					stroke={c}
 				/>
 			{/if}
 		{/each}
