@@ -31,7 +31,6 @@
 	else iHover = undefined;
 </script>
 
-<div>Distances</div>
 <div style="position: relative;">
 	<svg
 		style="position: absolute; left: 0; top: 0;"

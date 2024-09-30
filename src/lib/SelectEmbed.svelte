@@ -36,7 +36,6 @@
 	else iHover = undefined;
 </script>
 
-<div>Selected</div>
 <div style="position: relative;">
 	<svg
 		{width}

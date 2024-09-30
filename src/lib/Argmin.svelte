@@ -33,7 +33,6 @@
 	else iHover = undefined;
 </script>
 
-<div>Argmin</div>
 <div style="position: relative;">
 	<svg {width} {height} on:mouseleave={() => ($hovering = undefined)}>
 		{#each { length: argmin.length } as _, i}

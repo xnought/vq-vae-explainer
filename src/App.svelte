@@ -85,6 +85,9 @@
 	let codebookHeight = 150;
 	let prismSquare = 150;
 	let prismSmallerSquare = 100;
+	let argminWidth = 10;
+	let expanded = false;
+	let qvisSquare = 150;
 
 	// svg positioning
 	$: inputX = 0;
@@ -100,11 +103,32 @@
 	$: inPrismX = encoderOutX + inputEncoderGap;
 	$: inPrismY = encoderOutY;
 
-	$: codebookX = inPrismX + prismSquare + inputEncoderGap;
-	$: codebookY = 0;
+	$: reshapeFeaturesX = inPrismX + prismSquare + inputEncoderGap;
+	$: reshapeFeaturesY = inPrismY;
 
-	$: outPrismX = codebookX + codebookWidth + inputEncoderGap;
+	$: codebookX = expanded
+		? reshapeFeaturesX + featuresWidth + 3 * inputEncoderGap
+		: inPrismX + prismSquare + inputEncoderGap;
+	$: codebookY = 25;
+
+	$: pairwiseX = codebookX;
+	$: pairwiseY = reshapeFeaturesY;
+
+	$: argminX = pairwiseX + codebookWidth + inputEncoderGap;
+	$: argminY = reshapeFeaturesY;
+
+	$: quantizedX = argminX + argminWidth + 3 * inputEncoderGap;
+	$: quantizedY = reshapeFeaturesY;
+
+	$: outPrismX = expanded
+		? quantizedX + featuresWidth + inputEncoderGap
+		: codebookX + codebookWidth + inputEncoderGap;
 	$: outPrismY = inPrismY;
+
+	$: qvisX = expanded
+		? quantizedX
+		: codebookX + codebookWidth / 2 - qvisSquare / 2;
+	$: qvisY = expanded ? quantizedY + featuresHeight + 30 : inPrismY;
 
 	$: decoderX = outPrismX + prismSquare + inputEncoderGap;
 	$: decoderY = encoderOutY;
@@ -191,12 +215,74 @@
 			{/if}
 		</foreignObject>
 
-		{#if idxs}
+		{#if expanded}
+			<g class="fade-in">
+				<foreignObject
+					x={reshapeFeaturesX}
+					y={reshapeFeaturesY}
+					width={featuresWidth}
+					height={featuresHeight}
+				>
+					{#if features}
+						<FeaturesReshape
+							{features}
+							width={featuresWidth}
+							height={featuresHeight}
+						/>
+					{/if}
+				</foreignObject>
+				<foreignObject
+					x={pairwiseX}
+					y={pairwiseY}
+					width={codebookWidth}
+					height={featuresHeight}
+				>
+					{#if distances}
+						<Pairwise
+							{distances}
+							width={codebookWidth}
+							height={featuresHeight}
+						/>
+					{/if}
+				</foreignObject>
+				<foreignObject
+					x={argminX}
+					y={argminY}
+					width={argminWidth}
+					height={featuresHeight}
+				>
+					{#if argmin}
+						<Argmin
+							{argmin}
+							height={featuresHeight}
+							width={argminWidth}
+						/>
+					{/if}
+				</foreignObject>
+				<foreignObject
+					x={quantizedX}
+					y={quantizedY}
+					width={featuresWidth}
+					height={featuresHeight}
+				>
+					{#if quantized}
+						<SelectEmbed
+							{quantized}
+							{argmin}
+							width={featuresWidth}
+							height={featuresHeight}
+						/>
+					{/if}
+				</foreignObject>
+			</g>
+		{/if}
+
+		{#if idxs && !expanded}
 			<Quantized
-				x={codebookX + codebookWidth / 2 - 150 / 2}
-				y={codebookY + 150 + 50}
-				width={150}
-				height={150}
+				x={qvisX}
+				y={qvisY}
+				width={qvisSquare}
+				height={qvisSquare}
 				{idxs}
 			/>
 		{/if}
@@ -240,6 +326,25 @@
 				square={inputOutputCanvasSize}
 				maxVal={1}
 			></MnistDigit>
+		</foreignObject>
+
+		<foreignObject
+			x={inPrismX}
+			y={inPrismY + prismSquare + 20}
+			width={150}
+			height={100}
+		>
+			<Button
+				style="width: 150px;"
+				color="dark"
+				on:click={() => (expanded = !expanded)}
+			>
+				{#if expanded}
+					Close
+				{:else}
+					Show Quantizing Process
+				{/if}
+			</Button>
 		</foreignObject>
 	</svg>
 
