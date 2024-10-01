@@ -5,7 +5,7 @@
 	import MnistDigit from "./lib/digit/MnistDigit.svelte";
 	import Codebook from "./lib/Codebook.svelte";
 	import { Button } from "flowbite-svelte";
-	import { TrashBinOutline } from "flowbite-svelte-icons";
+	import { TrashBinOutline, ArrowRightOutline } from "flowbite-svelte-icons";
 
 	import { onDestroy, onMount } from "svelte";
 	import { loadAllImages } from "./load";
@@ -151,7 +151,7 @@
 <Header />
 <main class="p-5">
 	<div class="mb-2">
-		<div class="mb-1 flex gap-1 out">
+		<div class="mb-2 flex gap-1 out">
 			<Pointer /> <b>Select an input</b> or draw by dragging on the canvas
 		</div>
 		<ImageSelector imageUrls={images} bind:selectedUrl={selectedImage} />
@@ -225,6 +225,23 @@
 			height={prismSquare}
 			square={prismSmallerSquare}
 		/>
+
+		<foreignObject
+			x={codebookX - 125}
+			y={codebookY + 100}
+			width={100}
+			height={50}
+			class="code min"
+			style="font-size: 11px;"
+		>
+			<div class="flex items-center">
+				continuous features snap to discrete codes
+				<ArrowRightOutline
+					color="rgba(255,255,255,0.2)"
+					style="transform: rotate(-45deg) scale(2);"
+				/>
+			</div>
+		</foreignObject>
 
 		<text x={codebookX} y={codebookY - 7} class="code"
 			>embeddings <tspan class="min">(codebook)</tspan></text
@@ -320,11 +337,8 @@
 
 		{#if idxs}
 			<text x={outPrismX} y={outPrismY + prismSquare + 18} class="code">
-				<tspan x={outPrismX} dy="0"> quantized </tspan>
-				<tspan x={outPrismX} dy="20" class="min"
-					>(grab the entire embedding vector for each code)</tspan
-				></text
-			>
+				quantized
+			</text>
 			<Features
 				x={outPrismX}
 				y={outPrismY}
@@ -352,6 +366,22 @@
 			/>
 		</g>
 
+		<foreignObject
+			x={codebookX + codebookWidth + 15}
+			y={codebookY + 110}
+			width={100}
+			height={50}
+			class="code min"
+			style="font-size: 11px;"
+		>
+			<div class="flex items-center gap-2">
+				<ArrowRightOutline
+					color="rgba(255,255,255,0.2)"
+					style="transform: rotate(45deg) scale(2);"
+				/>
+				grab embedding representation for each selected code
+			</div>
+		</foreignObject>
 		<text x={outputX} y={-7} class="code">reconstruction</text>
 		<foreignObject
 			id="output"
