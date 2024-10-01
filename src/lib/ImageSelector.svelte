@@ -32,6 +32,8 @@
 	.lined {
 		opacity: 1;
 		box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.5);
+		outline: rgba(255, 255, 255, 0.3) 1px solid;
+		border-radius: 1px;
 	}
 	.s {
 		cursor: pointer;

@@ -142,14 +142,19 @@
 		stroke: "rgba(255,255,255,0.3)",
 		fill: "rgba(255,255,255,0.05)",
 	};
+	const mnistStyle = {
+		style: `outline: 2px solid ${sankeyColors.stroke}; border-radius: 1px;`,
+	};
 </script>
 
 <Header />
 <main class="p-5">
-	<div class="mb-2 flex gap-2 items-center">
+	<div class="mb-2">
+		<div class="mb-1">Select an input or draw directly</div>
 		<ImageSelector imageUrls={images} bind:selectedUrl={selectedImage} />
 	</div>
-	<svg>
+	<svg style="margin-top: 40px;">
+		<text x={inputX} y={-7} class="code">input</text>
 		<foreignObject
 			id="input"
 			x={inputX}
@@ -158,6 +163,7 @@
 			height={inputOutputCanvasSize + 100}
 		>
 			<MnistDigit
+				{...mnistStyle}
 				data={inputDigit}
 				square={inputOutputCanvasSize}
 				maxVal={1}
@@ -173,7 +179,12 @@
 				on:click={() => {
 					selectedImage = "clear";
 					rawImages = rawImages; // weirdly needed for UI to update;
-				}}><TrashBinOutline class="mr-1" size="sm" /> Clear</Button
+				}}
+			>
+				Clear input drawing <TrashBinOutline
+					class="ml-1"
+					size="sm"
+				/></Button
 			>
 		</foreignObject>
 
@@ -314,6 +325,8 @@
 				{...sankeyColors}
 			/>
 		</g>
+
+		<text x={outputX} y={-7} class="code">reconstruction</text>
 		<foreignObject
 			id="output"
 			x={outputX}
@@ -322,6 +335,7 @@
 			height={inputOutputCanvasSize + 100}
 		>
 			<MnistDigit
+				{...mnistStyle}
 				data={outputDigit}
 				square={inputOutputCanvasSize}
 				maxVal={1}
