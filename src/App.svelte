@@ -22,6 +22,7 @@
 	import Sankey from "./lib/Sankey.svelte";
 	import Prism from "./lib/Prism.svelte";
 	import { color } from "./color";
+	import Pointer from "./lib/Pointer.svelte";
 
 	const inputOutputCanvasSize = 300;
 	const images = [1, 2, 3, 4, 5, 7].map((d) => `images/${d}.png`);
@@ -150,11 +151,13 @@
 <Header />
 <main class="p-5">
 	<div class="mb-2">
-		<div class="mb-1">Select an input or draw directly</div>
+		<div class="mb-1 flex gap-1 out">
+			<Pointer /> <b>Select an input</b> or draw by dragging on the canvas
+		</div>
 		<ImageSelector imageUrls={images} bind:selectedUrl={selectedImage} />
 	</div>
 	<svg style="margin-top: 40px;">
-		<text x={inputX} y={-7} class="code">input</text>
+		<text x={inputX} y={-7} class="code">input </text>
 		<foreignObject
 			id="input"
 			x={inputX}
@@ -205,6 +208,16 @@
 			/>
 		</g>
 
+		<svg x={inPrismX} y={inPrismY + prismSquare + 18}>
+			<text x={0} y={0} class="code"> features </text>
+			<text x={25 + 5} y={25} class="code out">
+				<tspan x={25 + 5} dy="0"> hover features to see</tspan>
+				<tspan x={25 + 5} dy="15">
+					closest codes and quantization</tspan
+				>
+			</text>
+			<Pointer y={8} />
+		</svg>
 		<Features
 			x={inPrismX}
 			y={inPrismY}
@@ -213,12 +226,16 @@
 			square={prismSmallerSquare}
 		/>
 
+		<text x={codebookX} y={codebookY - 7} class="code"
+			>embeddings <tspan class="min">(codebook)</tspan></text
+		>
 		<foreignObject x={codebookX} y={codebookY} width={250} height={150}>
 			{#if embeddings}
 				<Codebook
 					width={250}
 					height={150}
 					{embeddings}
+					showMatrix={expanded}
 					hoveringColumn={idxs && $hovering
 						? idxs[$hovering[0]][$hovering[1]]
 						: undefined}
@@ -296,9 +313,18 @@
 				height={qvisSquare}
 				{idxs}
 			/>
+			<text x={qvisX} y={qvisY + 18 + qvisSquare} class="code"
+				>idxs <tspan class="min">(closest codes)</tspan></text
+			>
 		{/if}
 
 		{#if idxs}
+			<text x={outPrismX} y={outPrismY + prismSquare + 18} class="code">
+				<tspan x={outPrismX} dy="0"> quantized </tspan>
+				<tspan x={outPrismX} dy="20" class="min"
+					>(grab the entire embedding vector for each code)</tspan
+				></text
+			>
 			<Features
 				x={outPrismX}
 				y={outPrismY}
@@ -342,7 +368,7 @@
 			></MnistDigit>
 		</foreignObject>
 
-		<foreignObject
+		<!-- <foreignObject
 			x={inPrismX}
 			y={inPrismY + prismSquare + 20}
 			width={150}
@@ -359,7 +385,7 @@
 					Show Quantizing Process
 				{/if}
 			</Button>
-		</foreignObject>
+		</foreignObject> -->
 	</svg>
 
 	<!-- <div class="mb-2 flex gap-2 items-center">
@@ -465,5 +491,13 @@
 	svg,
 	foreignObject {
 		overflow: visible;
+	}
+	.out {
+		fill: hsla(39, 100%, 50%, 0.5);
+		color: hsla(39, 100%, 50%, 0.5);
+	}
+	.min {
+		fill: rgba(255, 255, 255, 0.5);
+		color: rgba(255, 255, 255, 0.5);
 	}
 </style>

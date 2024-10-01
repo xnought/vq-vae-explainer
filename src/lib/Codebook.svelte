@@ -9,6 +9,7 @@
 	export let y = 0;
 	export let embeddings;
 	export let hoveringColumn = undefined;
+	export let showMatrix = true;
 
 	$: rows = embeddings.length;
 	$: columns = embeddings[0].length;
@@ -52,7 +53,14 @@
 			{/each}
 		{/if}
 	</svg>
-	<Matrix {width} {height} data={embeddings} bind:w bind:h />
+	<Matrix
+		{width}
+		{height}
+		data={embeddings}
+		bind:w
+		bind:h
+		showData={showMatrix}
+	/>
 </div>
 
 <style>

@@ -12,6 +12,7 @@
 	// "row" or "auto"
 	export let scaleApply = "row";
 	export let interp = d3.interpolateGreys;
+	export let showData = true;
 
 	// just to propagate upwards
 	export let h = height / rows;
@@ -70,7 +71,7 @@
 		}
 	}
 
-	$: if (ctx && data) drawData(data);
+	$: if (ctx && data && showData) drawData(data);
 </script>
 
 <canvas bind:this={canvasEl} {width} {height} />
