@@ -398,24 +398,27 @@
 			></MnistDigit>
 		</foreignObject>
 
-		<!-- <foreignObject
-			x={inPrismX}
-			y={inPrismY + prismSquare + 20}
-			width={150}
+		<foreignObject
+			x={codebookX}
+			y={codebookY - 125}
+			width={300}
 			height={100}
 		>
 			<Button
-				style="width: 150px;"
+				style="width: 250px;"
 				color="dark"
 				on:click={() => (expanded = !expanded)}
 			>
 				{#if expanded}
 					Close
 				{:else}
-					Show Quantizing Process
+					<div class="flex gap-2">
+						<Pointer width={40} height={40} /> Click here to reveal more
+						Vector Quantization details
+					</div>
 				{/if}
 			</Button>
-		</foreignObject> -->
+		</foreignObject>
 	</svg>
 
 	<!-- <div class="mb-2 flex gap-2 items-center">
