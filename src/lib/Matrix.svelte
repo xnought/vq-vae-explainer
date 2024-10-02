@@ -71,7 +71,12 @@
 		}
 	}
 
+	function clearCanvas() {
+		ctx.clearRect(0, 0, width, height);
+	}
+
 	$: if (ctx && data && showData) drawData(data);
+	$: if (ctx && showData === false) clearCanvas();
 </script>
 
 <canvas bind:this={canvasEl} {width} {height} />

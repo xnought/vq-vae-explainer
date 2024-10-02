@@ -23,6 +23,7 @@
 	import Prism from "./lib/Prism.svelte";
 	import { color } from "./color";
 	import Pointer from "./lib/Pointer.svelte";
+	import TSpanIdxs from "./lib/TSpanIdxs.svelte";
 
 	const inputOutputCanvasSize = 300;
 	const images = [1, 2, 3, 4, 5, 7].map((d) => `images/${d}.png`);
@@ -87,12 +88,13 @@
 	let prismSquare = 150;
 	let prismSmallerSquare = 100;
 	let argminWidth = 10;
-	let expanded = false;
+	let expanded = true;
 	let qvisSquare = 150;
 
 	// svg positioning
 	$: inputX = 0;
 	$: inputEncoderGap = 10;
+	$: largerGap = 3 * inputEncoderGap;
 
 	$: encoderX = inputX + inputOutputCanvasSize + inputEncoderGap;
 	$: encoderInHeight = inputOutputCanvasSize;
@@ -104,25 +106,22 @@
 	$: inPrismX = encoderOutX + inputEncoderGap;
 	$: inPrismY = encoderOutY;
 
-	$: reshapeFeaturesX = inPrismX + prismSquare + inputEncoderGap;
+	$: reshapeFeaturesX = inPrismX + prismSquare + largerGap;
 	$: reshapeFeaturesY = inPrismY;
 
 	$: codebookX = expanded
-		? reshapeFeaturesX + featuresWidth + 3 * inputEncoderGap
+		? reshapeFeaturesX + featuresWidth + largerGap
 		: inPrismX + prismSquare + inputEncoderGap;
 	$: codebookY = 25;
 
 	$: pairwiseX = codebookX;
 	$: pairwiseY = reshapeFeaturesY;
 
-	$: argminX = pairwiseX + codebookWidth + inputEncoderGap;
-	$: argminY = reshapeFeaturesY;
-
-	$: quantizedX = argminX + argminWidth + 3 * inputEncoderGap;
+	$: quantizedX = pairwiseX + codebookWidth + largerGap;
 	$: quantizedY = reshapeFeaturesY;
 
 	$: outPrismX = expanded
-		? quantizedX + featuresWidth + inputEncoderGap
+		? quantizedX + featuresWidth + largerGap
 		: codebookX + codebookWidth + inputEncoderGap;
 	$: outPrismY = inPrismY;
 
@@ -210,13 +209,13 @@
 
 		<svg x={inPrismX} y={inPrismY + prismSquare + 18}>
 			<text x={0} y={0} class="code"> features </text>
-			<text x={25 + 5} y={25} class="code out">
-				<tspan x={25 + 5} dy="0"> hover features to see</tspan>
-				<tspan x={25 + 5} dy="15">
-					closest codes and quantization</tspan
-				>
-			</text>
-			<Pointer y={8} />
+			{#if !expanded}
+				<text x={25 + 5} y={25} class="out">
+					<tspan x={25 + 5} dy="0"> hover features to see</tspan>
+					<tspan x={25 + 5} dy="15">quantization</tspan>
+				</text>
+				<Pointer y={8} />
+			{/if}
 		</svg>
 		<Features
 			x={inPrismX}
@@ -235,7 +234,10 @@
 			style="font-size: 11px;"
 		>
 			<div class="flex items-center">
-				continuous features snap to discrete codes
+				<span>
+					continuous <span class="code">features</span> snap to
+					<span class="qcode">discrete codes</span>
+				</span>
 				<ArrowRightOutline
 					color="rgba(255,255,255,0.2)"
 					style="transform: rotate(-45deg) scale(2);"
@@ -243,7 +245,7 @@
 			</div>
 		</foreignObject>
 
-		<text x={codebookX} y={codebookY - 7} class="code"
+		<text x={codebookX} y={codebookY - 7} class="qcode"
 			>embeddings <tspan class="min">(codebook)</tspan></text
 		>
 		<foreignObject x={codebookX} y={codebookY} width={250} height={150}>
@@ -262,6 +264,21 @@
 
 		{#if expanded}
 			<g class="fade-in">
+				<text
+					x={reshapeFeaturesX}
+					y={reshapeFeaturesY + featuresHeight}
+					class="code"
+					style="font-size: 12px;"
+				>
+					<tspan dy="15" x={reshapeFeaturesX}
+						><tspan style="fill: darkviolet;">fvecs</tspan> = tf.reshape(</tspan
+					>
+					<tspan dy="15" x={reshapeFeaturesX + 20}>features,</tspan>
+					<tspan dy="15" x={reshapeFeaturesX + 20}
+						>(-1, embed_dim)</tspan
+					>
+					<tspan dy="15" x={reshapeFeaturesX}>)</tspan>
+				</text>
 				<foreignObject
 					x={reshapeFeaturesX}
 					y={reshapeFeaturesY}
@@ -270,40 +287,65 @@
 				>
 					{#if features}
 						<FeaturesReshape
+							style="outline: 2px solid darkviolet;"
+							color="darkviolet"
 							{features}
 							width={featuresWidth}
 							height={featuresHeight}
 						/>
 					{/if}
 				</foreignObject>
+
+				<text
+					x={pairwiseX}
+					y={pairwiseY + featuresHeight}
+					class="code"
+					style="font-size: 12px;"
+				>
+					<tspan dy="15" x={pairwiseX}
+						><tspan style="fill: crimson;">dists</tspan> = cdist(<tspan
+							style="fill: darkviolet;">fvecs</tspan
+						>, <tspan class="qcode">embeddings</tspan>)</tspan
+					>
+					<tspan dy="15" x={pairwiseX}
+						><TSpanIdxs /> = tf.argmin(<tspan style="fill: crimson;"
+							>dists</tspan
+						>, -1)</tspan
+					>
+				</text>
 				<foreignObject
 					x={pairwiseX}
 					y={pairwiseY}
 					width={codebookWidth}
 					height={featuresHeight}
 				>
-					{#if distances}
+					{#if distances && argmin}
 						<Pairwise
+							style="outline: 2px solid crimson;"
+							{argmin}
 							{distances}
 							width={codebookWidth}
 							height={featuresHeight}
+							color="crimson"
 						/>
 					{/if}
 				</foreignObject>
-				<foreignObject
-					x={argminX}
-					y={argminY}
-					width={argminWidth}
-					height={featuresHeight}
+
+				<text
+					x={quantizedX}
+					y={quantizedY + featuresHeight}
+					class="code"
+					style="font-size: 12px;"
 				>
-					{#if argmin}
-						<Argmin
-							{argmin}
-							height={featuresHeight}
-							width={argminWidth}
-						/>
-					{/if}
-				</foreignObject>
+					<tspan dy="15" x={quantizedX}
+						><tspan fill="yellow">qvecs</tspan> = select_embed(</tspan
+					>
+					<tspan dy="15" x={quantizedX + 20}><TSpanIdxs />,</tspan>
+					<tspan dy="15" x={quantizedX + 20} class="qcode"
+						>embeddings</tspan
+					>
+					<tspan dy="15" x={quantizedX}>)</tspan>
+				</text>
 				<foreignObject
 					x={quantizedX}
 					y={quantizedY}
@@ -312,6 +354,7 @@
 				>
 					{#if quantized}
 						<SelectEmbed
+							style="outline: yellow 2px solid"
 							{quantized}
 							{argmin}
 							width={featuresWidth}
@@ -331,14 +374,11 @@
 				{idxs}
 			/>
 			<text x={qvisX} y={qvisY + 18 + qvisSquare} class="code"
-				>idxs <tspan class="min">(closest codes)</tspan></text
+				>idxs <tspan class="qcode min">(closest codes)</tspan></text
 			>
 		{/if}
 
 		{#if idxs}
-			<text x={outPrismX} y={outPrismY + prismSquare + 18} class="code">
-				quantized
-			</text>
 			<Features
 				x={outPrismX}
 				y={outPrismY}
@@ -347,6 +387,25 @@
 				square={prismSmallerSquare}
 				colorOverrides={grabColorsForOutFeatures(idxs)}
 			/>
+			<text x={outPrismX} y={outPrismY + prismSquare + 18} class="qcode">
+				quantized
+			</text>
+			{#if expanded}
+				{@const offsetX = outPrismX + 70}
+				<text
+					x={offsetX}
+					y={outPrismY + prismSquare + 3}
+					class="code"
+					style="font-size: 12px;"
+				>
+					<tspan dy="15" x={offsetX}> = tf.reshape(</tspan>
+					<tspan dy="15" x={offsetX + 20}
+						><tspan fill="yellow">qvecs</tspan>,</tspan
+					>
+					<tspan dy="15" x={offsetX + 20}>features.shape</tspan>
+					<tspan dy="15" x={offsetX}>)</tspan>
+				</text>
+			{/if}
 		{/if}
 
 		<g id="decoder">
@@ -379,9 +438,14 @@
 					color="rgba(255,255,255,0.2)"
 					style="transform: rotate(45deg) scale(2);"
 				/>
-				grab embedding representation for each selected code
+				<span>
+					grab embedding representation for each selected <span
+						class="qcode">code</span
+					>
+				</span>
 			</div>
 		</foreignObject>
+
 		<text x={outputX} y={-7} class="code">reconstruction</text>
 		<foreignObject
 			id="output"

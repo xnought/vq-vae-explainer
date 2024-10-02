@@ -5,6 +5,8 @@
 	export let features;
 	export let width = 200;
 	export let height = 500;
+	export let color = "white";
+	export let style = "";
 
 	function mapI(x, y) {
 		const s = 7;
@@ -31,7 +33,7 @@
 	else iHover = undefined;
 </script>
 
-<div style="position: relative;">
+<div style="position: relative;{style}">
 	<svg
 		style="position: absolute; left: 0; top: 0;"
 		{width}
@@ -45,8 +47,8 @@
 					y={i * h}
 					{width}
 					height={h}
-					fill={iHover === i ? "white" : "transparent"}
-					stroke={iHover === i ? "white" : "transparent"}
+					fill={iHover === i ? color : "transparent"}
+					stroke={iHover === i ? color : "transparent"}
 					fill-opacity={0.3}
 					stroke-width={2}
 					on:mouseenter={() => ($hovering = unmapI2(i))}

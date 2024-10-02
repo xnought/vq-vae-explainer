@@ -40,7 +40,7 @@
 						stroke-width={2}
 					/>
 					<text
-						class="code"
+						class="qcode"
 						x={x + w / 2}
 						y={height + 13}
 						fill={codeColors[i]}

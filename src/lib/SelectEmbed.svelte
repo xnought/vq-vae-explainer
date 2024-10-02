@@ -6,6 +6,7 @@
 
 	export let argmin;
 	export let quantized;
+	export let style = "";
 
 	export let width = 200;
 	export let height = 300;
@@ -36,7 +37,7 @@
 	else iHover = undefined;
 </script>
 
-<div style="position: relative;">
+<div style="position: relative;{style}">
 	<svg
 		{width}
 		{height}

@@ -2,6 +2,7 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 @import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Tiny5&display=swap");
 
 :root {
 	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -25,6 +26,10 @@ text {
 
 .code {
 	font-family: "Fira Code", monospace;
+	font-optical-sizing: auto;
+}
+.qcode {
+	font-family: "Tiny5", "Fira Code", monospace;
 	font-optical-sizing: auto;
 }
 

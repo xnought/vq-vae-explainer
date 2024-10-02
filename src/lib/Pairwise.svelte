@@ -1,10 +1,13 @@
 <script>
 	import Matrix from "./Matrix.svelte";
-	import { hovering } from "../stores";
+	import { codeColors, hovering } from "../stores";
 
 	export let distances;
+	export let argmin;
 	export let width = 200;
 	export let height = 500;
+	export let style = "";
+	export let color = "white";
 
 	function mapI(x, y) {
 		const s = 7;
@@ -31,7 +34,7 @@
 	else iHover = undefined;
 </script>
 
-<div style="position: relative;">
+<div style="position: relative;{style}">
 	<svg
 		style="position: absolute; left: 0; top: 0;"
 		{width}
@@ -45,12 +48,26 @@
 					y={i * h}
 					{width}
 					height={h}
-					fill={iHover === i ? "white" : "transparent"}
-					stroke={iHover === i ? "white" : "transparent"}
+					fill={iHover === i ? color : "transparent"}
+					stroke={iHover === i ? color : "transparent"}
 					fill-opacity={0.3}
 					stroke-width={2}
 					on:mouseenter={() => ($hovering = unmapI2(i))}
 				/>
+				<rect
+					x={argmin[i] * w}
+					y={i * h}
+					width={w}
+					height={h}
+					stroke-width={2}
+					stroke={codeColors[argmin[i]]}
+					stroke-opacity={$hovering === undefined ||
+					(unmapI2(i)[0] === $hovering[0] &&
+						unmapI2(i)[1] === $hovering[1])
+						? 1.0
+						: 0.5}
+				>
+				</rect>
 			{/each}
 		{/if}
 	</svg>
