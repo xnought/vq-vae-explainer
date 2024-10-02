@@ -87,8 +87,7 @@
 	let codebookHeight = 150;
 	let prismSquare = 150;
 	let prismSmallerSquare = 100;
-	let argminWidth = 10;
-	let expanded = true;
+	let expanded = false;
 	let qvisSquare = 150;
 
 	// svg positioning
@@ -151,7 +150,8 @@
 <main class="p-5">
 	<div class="mb-2">
 		<div class="mb-2 flex gap-1 out">
-			<Pointer /> <b>Select an input</b> or draw by dragging on the canvas
+			<Pointer /> <b>Select</b> an <span class="code">input</span> or draw
+			by dragging on the canvas
 		</div>
 		<ImageSelector imageUrls={images} bind:selectedUrl={selectedImage} />
 	</div>
@@ -211,8 +211,13 @@
 			<text x={0} y={0} class="code"> features </text>
 			{#if !expanded}
 				<text x={25 + 5} y={25} class="out">
-					<tspan x={25 + 5} dy="0"> hover features to see</tspan>
-					<tspan x={25 + 5} dy="15">quantization</tspan>
+					<tspan x={25 + 5} dy="0">
+						<tspan style="font-weight: 600;">Hover</tspan>
+						<tspan class="code">features</tspan></tspan
+					>
+					<tspan x={25 + 5} dy="15"
+						>to map to <tspan class="qcode">quantized</tspan></tspan
+					>
 				</text>
 				<Pointer y={8} />
 			{/if}
