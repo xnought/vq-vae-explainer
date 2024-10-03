@@ -65,8 +65,10 @@
 					dataOpacity
 				).toString();
 				ctx.fillRect(x, y, w, h);
-				ctx.fillStyle = "lightgrey";
-				ctx.strokeRect(x, y, w, h);
+
+				// these are terribly slow for some reason
+				// ctx.fillStyle = "lightgrey";
+				// ctx.strokeRect(x, y, w, h);
 			}
 		}
 	}

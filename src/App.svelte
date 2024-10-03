@@ -58,7 +58,7 @@
 			const input = tf.tensor(d).reshape([1, 28, 28, 1]);
 			const recon = model.predict(input);
 
-			inputDigit = input.flatten().arraySync();
+			inputDigit = d;
 			outputDigit = recon.flatten().arraySync();
 			idxs = model.vq.idxs.reshape([7, 7]).arraySync();
 			features = model.vq.features.arraySync();
@@ -80,7 +80,7 @@
 		return result;
 	}
 
-	$: if (model && selectedImage) forward(rawImages[selectedImage]);
+	// $: if (model && selectedImage) forward(rawImages[selectedImage]);
 	let featuresWidth = 150;
 	let featuresHeight = 300;
 	let codebookWidth = 250;
@@ -144,6 +144,21 @@
 	const mnistStyle = {
 		style: `outline: 2px solid ${sankeyColors.stroke}; border-radius: 1px;`,
 	};
+
+	function updateSelectedImage(selectedImage) {
+		forward(rawImages[selectedImage]);
+	}
+
+	$: if (model && rawImages) updateSelectedImage(selectedImage);
+
+	let updateCounter = 0;
+	function updateDraw(d, skip = 5) {
+		inputDigit = d;
+		if (updateCounter % skip === 0) {
+			forward(d);
+		}
+		updateCounter++;
+	}
 </script>
 
 <Header />
@@ -170,9 +185,7 @@
 				square={inputOutputCanvasSize}
 				maxVal={1}
 				enableDrawing
-				onChange={(d) => {
-					forward(d);
-				}}
+				onChange={updateDraw}
 			></MnistDigit>
 			<Button
 				class="mt-2"
@@ -489,104 +502,6 @@
 			</Button>
 		</foreignObject>
 	</svg>
-
-	<!-- <div class="mb-2 flex gap-2 items-center">
-		<ImageSelector imageUrls={images} bind:selectedUrl={selectedImage} />
-	</div>
-	<div class="flex gap-5" id="tool">
-		<div>
-			<MnistDigit
-				data={inputDigit}
-				square={inputOutputCanvasSize}
-				maxVal={1}
-				enableDrawing
-				onChange={(d) => {
-					forward(d);
-				}}
-			></MnistDigit>
-			<Button
-				class="mt-2"
-				size="xs"
-				color="alternative"
-				on:click={() => {
-					selectedImage = "clear";
-					rawImages = rawImages; // weirdly needed for UI to update;
-				}}><TrashBinOutline class="mr-1" size="sm" /> Clear</Button
-			>
-		</div>
-		<div>
-			<Features width={200} height={200} square={125} />
-			<div class="mt-5">
-				{#if features && $hovering}
-					<Matrix
-						data={[features[$hovering[0] * 7 + $hovering[1]]]}
-						width={140}
-						height={200 / 16}
-					/>
-				{/if}
-			</div>
-		</div>
-		<div>
-			{#if features}
-				<FeaturesReshape
-					{features}
-					width={featuresWidth}
-					height={featuresHeight}
-				/>
-			{/if}
-		</div>
-		<div>
-			<div>
-				{#if embeddings}
-					<Codebook
-						width={250}
-						height={150}
-						{embeddings}
-						hoveringColumn={idxs && $hovering
-							? idxs[$hovering[0]][$hovering[1]]
-							: undefined}
-					/>
-				{/if}
-			</div>
-			<div class="mt-20">
-				{#if idxs}
-					<Quantized width={150} height={150} {idxs} />
-				{/if}
-			</div>
-		</div>
-		<div>
-			{#if distances}
-				<Pairwise {distances} width={250} height={featuresHeight} />
-			{/if}
-		</div>
-
-		<div>
-			{#if argmin}
-				<Argmin {argmin} height={featuresHeight} />
-			{/if}
-		</div>
-		<div>
-			{#if quantized}
-				<SelectEmbed
-					{quantized}
-					{argmin}
-					width={featuresWidth}
-					height={featuresHeight}
-				/>
-			{/if}
-		</div>
-
-		<div>
-			<Features width={200} height={200} square={125} />
-		</div>
-		<div>
-			<MnistDigit
-				data={outputDigit}
-				square={inputOutputCanvasSize}
-				maxVal={1}
-			></MnistDigit>
-		</div>
-	</div> -->
 </main>
 
 <style>
