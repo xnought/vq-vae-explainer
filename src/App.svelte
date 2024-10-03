@@ -392,7 +392,8 @@
 				{idxs}
 			/>
 			<text x={qvisX} y={qvisY + 18 + qvisSquare} class="code"
-				>idxs <tspan class="qcode min">(closest codes)</tspan></text
+				><TSpanIdxs />
+				{" "}<tspan class="qcode min">(closest codes)</tspan></text
 			>
 		{/if}
 
