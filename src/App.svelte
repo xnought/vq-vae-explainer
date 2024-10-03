@@ -55,11 +55,14 @@
 
 	function forward(d) {
 		tf.tidy(() => {
-			const input = tf.tensor(d).reshape([1, 28, 28, 1]);
+			const input = tf
+				.tensor(d)
+				.reshape([1, 28, 28, 1])
+				.transpose([0, 2, 1, 3]);
 			const recon = model.predict(input);
 
 			inputDigit = d;
-			outputDigit = recon.flatten().arraySync();
+			outputDigit = recon.transpose([0, 2, 1, 3]).flatten().arraySync();
 			idxs = model.vq.idxs.reshape([7, 7]).arraySync();
 			features = model.vq.features.arraySync();
 			distances = model.vq.distances.arraySync();
