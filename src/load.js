@@ -25,8 +25,8 @@ function parseNumpyTxt(txt) {
 	return result;
 }
 
-export async function loadEmbeddings() {
-	const name = `embeddings_dim${embedDim}_num${numEmbed}.txt`;
+export async function loadEmbeddings(version = "") {
+	const name = `embeddings_dim${embedDim}_num${numEmbed}${version}.txt`;
 	const out = await (await fetch(`${filepath}/${name}`)).text();
 	const parsed = parseNumpyTxt(out);
 	return tf.tensor(parsed);

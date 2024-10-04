@@ -72,9 +72,7 @@ export class VectorQuantizer {
 		// quantization step
 		const distances = tfDist(features, this.embeddings);
 		const idxs = distances.argMin(1);
-
-		const selectColumns = tf.oneHot(idxs, this.numEmbed);
-		const quantized = tf.matMul(selectColumns, this.embeddings.transpose());
+		const quantized = tf.transpose(tf.gather(this.embeddings, idxs, -1));
 
 		// save these so I can use later for visualizations
 		this.features = features;
@@ -103,7 +101,7 @@ export class VQVAE {
 	}
 	static async load() {
 		const [encoder, decoder] = await loadModels();
-		const embeddings = await loadEmbeddings();
+		const embeddings = await loadEmbeddings("_v2");
 		const vq = new VectorQuantizer(embeddings);
 		return new VQVAE(encoder, decoder, vq);
 	}
