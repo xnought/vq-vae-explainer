@@ -371,6 +371,17 @@
 					height={800}
 				>
 					<LinkedCode width="500px" bind:linkedCode />
+					<div class="mt-2">
+						<a
+							target="_blank"
+							href="https://colab.research.google.com/drive/1Dt6ngF_J50RUxfe7ZZYf-GBRORv7Husy?usp=sharing"
+						>
+							<img
+								src="https://colab.research.google.com/assets/colab-badge.svg"
+								alt="Open In Colab"
+							/>
+						</a>
+					</div>
 				</foreignObject>
 				<foreignObject
 					x={reshapeFeaturesX}
