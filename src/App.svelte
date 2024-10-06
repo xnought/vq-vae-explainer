@@ -232,14 +232,17 @@
 	</div>
 	<svg style="margin-top: 40px;">
 		{#if expanded}
-			<rect
-				style="transition: all 200ms ease-in-out; border-radius: 3px;"
-				fill="rgba(115, 138, 148, 0.1)"
-				stroke="rgba(115, 138, 148, 0.4)"
+			<foreignObject
 				{...linkedCodeRects[linkedCode]}
-				stroke-dasharray={3}
+				style="transition: all 200ms ease-in-out; "
 			>
-			</rect>
+				<div
+					style="background: rgba(115, 138, 148, 0.1); outline: 1px dashed  rgba(115, 138, 148, 0.4); width: {linkedCodeRects[
+						linkedCode
+					].width}px; height: {linkedCodeRects[linkedCode]
+						.height}px; border-radius: 3px; transition: all 200ms ease-in-out;"
+				></div>
+			</foreignObject>
 		{/if}
 		<text x={inputX} y={-7} class="code">input </text>
 		<foreignObject
@@ -362,7 +365,7 @@
 			<g class="fade-in">
 				<foreignObject
 					x={inputX}
-					y={inputOutputCanvasSize + 150}
+					y={inputOutputCanvasSize + 120}
 					width={500}
 					height={800}
 				>

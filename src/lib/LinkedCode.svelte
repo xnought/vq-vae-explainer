@@ -55,6 +55,7 @@ def select_columns(matrix, col_idxs): return tf.transpose(tf.gather(matrix, col_
 		out.style.height = height;
 		out.style.borderRadius = "3px";
 		out.style.fontSize = "11px";
+		out.style.padding = "10px";
 
 		const lines = el.querySelectorAll(".line");
 		for (const line of lines) {
