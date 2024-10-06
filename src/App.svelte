@@ -218,6 +218,7 @@
 			y: outPrismY,
 		}),
 	};
+	$: if (expanded === false) linkedCode = undefined;
 </script>
 
 <Header />
@@ -230,6 +231,16 @@
 		<ImageSelector imageUrls={images} bind:selectedUrl={selectedImage} />
 	</div>
 	<svg style="margin-top: 40px;">
+		{#if expanded}
+			<rect
+				style="transition: all 200ms ease-in-out; border-radius: 3px;"
+				fill="rgba(115, 138, 148, 0.1)"
+				stroke="rgba(115, 138, 148, 0.4)"
+				{...linkedCodeRects[linkedCode]}
+				stroke-dasharray={3}
+			>
+			</rect>
+		{/if}
 		<text x={inputX} y={-7} class="code">input </text>
 		<foreignObject
 			id="input"
@@ -296,6 +307,7 @@
 		</svg>
 
 		<Features
+			mouseenter={() => (linkedCode = "features")}
 			x={inPrismX}
 			y={inPrismY}
 			width={prismSquare}
@@ -326,7 +338,13 @@
 		<text x={codebookX} y={codebookY - 7} class="qcode"
 			>embeddings <tspan class="min">(codebook)</tspan></text
 		>
-		<foreignObject x={codebookX} y={codebookY} width={250} height={150}>
+		<foreignObject
+			x={codebookX}
+			y={codebookY}
+			width={250}
+			height={150}
+			on:mouseenter={() => (linkedCode = "embeddings")}
+		>
 			{#if embeddings}
 				<Codebook
 					width={250}
@@ -342,13 +360,6 @@
 
 		{#if expanded}
 			<g class="fade-in">
-				<rect
-					fill="none"
-					stroke="lightgrey"
-					{...linkedCodeRects[linkedCode]}
-					stroke-dasharray={5}
-				>
-				</rect>
 				<foreignObject
 					x={inputX}
 					y={inputOutputCanvasSize + 150}
@@ -377,6 +388,7 @@
 					y={reshapeFeaturesY}
 					width={featuresWidth}
 					height={featuresHeight}
+					on:mouseenter={() => (linkedCode = "fvecs")}
 				>
 					{#if features}
 						<FeaturesReshape
@@ -411,6 +423,7 @@
 					y={pairwiseY}
 					width={codebookWidth}
 					height={featuresHeight}
+					on:mouseenter={() => (linkedCode = "dists_idxs")}
 				>
 					{#if distances && argmin}
 						<Pairwise
@@ -444,6 +457,7 @@
 					y={quantizedY}
 					width={featuresWidth}
 					height={featuresHeight}
+					on:mouseenter={() => (linkedCode = "qvecs")}
 				>
 					{#if quantized}
 						<SelectEmbed
@@ -474,6 +488,7 @@
 
 		{#if idxs}
 			<Features
+				mouseenter={() => (linkedCode = "quantized")}
 				x={outPrismX}
 				y={outPrismY}
 				width={prismSquare}

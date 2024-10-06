@@ -3,6 +3,8 @@
 	import { hovering } from "../stores";
 	import Prism from "./Prism.svelte";
 
+	export let mouseenter = (e) => {};
+
 	export let width;
 	export let height;
 	export let x = 0;
@@ -41,6 +43,7 @@
 	{x}
 	{y}
 	style="overflow: visible;"
+	on:mouseenter={mouseenter}
 	on:mouseleave={() => ($hovering = undefined)}
 >
 	<Prism

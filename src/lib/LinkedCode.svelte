@@ -119,7 +119,7 @@ def select_columns(matrix, col_idxs): return tf.transpose(tf.gather(matrix, col_
 	</div>
 	{#if highlightHeight !== 0 || highlightStart !== 0}
 		<div
-			style="position: absolute; width: {width}; height: {highlightHeight}px; left: 0; top: {highlightStart}px; outline: 1px dashed hsla(100, 0%, 65%, 0.5); background:hsla(100, 0%, 65%, 0.1); border-radius: 3px; transition: all 500ms ease-in-out; pointer-events: none;"
+			style="position: absolute; width: {width}; height: {highlightHeight}px; left: 0; top: {highlightStart}px; outline: 1px dashed hsla(100, 0%, 65%, 0.5); background:hsla(100, 0%, 65%, 0.1); border-radius: 3px; transition: all 200ms ease-in-out; pointer-events: none;"
 		>
 			<!--  -->
 		</div>
