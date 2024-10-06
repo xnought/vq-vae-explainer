@@ -24,6 +24,7 @@
 	import { color } from "./color";
 	import Pointer from "./lib/Pointer.svelte";
 	import TSpanIdxs from "./lib/TSpanIdxs.svelte";
+	import SpanIdxs from "./lib/SpanIdxs.svelte";
 	import LinkedCode from "./lib/LinkedCode.svelte";
 
 	const inputOutputCanvasSize = 300;
@@ -132,7 +133,7 @@
 	$: qvisX = expanded
 		? quantizedX
 		: codebookX + codebookWidth / 2 - qvisSquare / 2;
-	$: qvisY = expanded ? quantizedY + featuresHeight + 30 : inPrismY;
+	$: qvisY = expanded ? featuresHeight + reshapeFeaturesY + 150 : inPrismY;
 
 	$: decoderX = outPrismX + prismSquare + inputEncoderGap;
 	$: decoderY = encoderOutY;
@@ -414,16 +415,17 @@
 					height={200}
 				>
 					<div>
-						Find distance (<span style="color: crimson;">dists</span
+						Find distance (<span style="color: deeppink;"
+							>dists</span
 						>) from each row vector in
 						<span style="color: darkviolet;">fvecs</span> to every
 						column vector in <span class="qcode">embeddings</span>.
-						Then pick the closest embedding index/code (<span
-							style="color: #5B5EC7">i</span
-						><span style="color: #4C8ADB">d</span><span
-							style="color: #53AFD0">x</span
-						><span style="color: #85F279">s</span>) as the
-						discrete/quantized representation of the feature vector.
+						Then pick the closest embedding as <SpanIdxs />
+						<span class="min"
+							>(the index of the closest codebook vector for each <span
+								style="color: darkviolet;">fvecs</span
+							>)</span
+						>.
 					</div>
 				</foreignObject>
 				<foreignObject
@@ -435,14 +437,28 @@
 				>
 					{#if distances && argmin}
 						<Pairwise
-							style="outline: 2px solid crimson;"
+							style="outline: 2px solid deeppink;"
 							{argmin}
 							{distances}
 							width={codebookWidth}
 							height={featuresHeight}
-							color="crimson"
+							color="deeppink"
 						/>
 					{/if}
+				</foreignObject>
+
+				<foreignObject
+					x={qvisX + qvisSquare + linkedCodeRectPadding / 2}
+					y={qvisY}
+					width={featuresWidth}
+					height={200}
+					class="code"
+					style="font-size: 12px;"
+				>
+					<div>
+						<SpanIdxs /> reshaped like features
+						<span class="min">(for visualization purposes)</span>.
+					</div>
 				</foreignObject>
 
 				<foreignObject
@@ -454,15 +470,14 @@
 					style="font-size: 12px;"
 				>
 					<div>
-						Take the full embedding representation for each closest <span
-							style="color: #5B5EC7">i</span
-						><span style="color: #4C8ADB">d</span><span
-							style="color: #53AFD0">x</span
-						><span style="color: #85F279">s</span> as
-						<span style="color: yellow">qvecs</span> to be decoded by
-						the decoder.
+						Select full vectors from <span class="qcode"
+							>embeddings</span
+						>
+						given each <SpanIdxs /> as
+						<span style="color: deepskyblue">qvecs</span>.
 					</div>
 				</foreignObject>
+
 				<foreignObject
 					x={quantizedX}
 					y={quantizedY}
@@ -472,7 +487,7 @@
 				>
 					{#if quantized}
 						<SelectEmbed
-							style="outline: yellow 2px solid"
+							style="outline: deepskyblue 2px solid"
 							{quantized}
 							{argmin}
 							width={featuresWidth}
@@ -480,10 +495,28 @@
 						/>
 					{/if}
 				</foreignObject>
+				<foreignObject
+					x={reshapeFeaturesX}
+					y={reshapeFeaturesY + featuresHeight + 200}
+					class="out"
+					width={300}
+					height={300}
+				>
+					<div class="flex gap-2">
+						<Pointer width={40} height={40} />
+						<span
+							><b>Hover</b> over a<ArrowRightOutline
+								style="display: inline; transform: rotate(-90deg)"
+							/>matrix to highlight the corresponding line of<ArrowRightOutline
+								style="display: inline; transform: rotate(180deg)"
+							/>Python code.
+						</span>
+					</div>
+				</foreignObject>
 			</g>
 		{/if}
 
-		{#if idxs && !expanded}
+		{#if idxs}
 			<Quantized
 				x={qvisX}
 				y={qvisY}

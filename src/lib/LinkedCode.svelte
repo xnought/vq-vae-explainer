@@ -115,6 +115,12 @@ def select_columns(matrix, col_idxs): return tf.transpose(tf.gather(matrix, col_
 </script>
 
 <div style="position: relative;">
+	<div
+		class="code"
+		style="color: rgba(255,255,255,0.2); font-size: 12px; position: absolute; left: 0; top: -20px;"
+	>
+		Python
+	</div>
 	<div style="position: relative;" bind:this={el}>
 		<!-- {@html html} -->
 	</div>
