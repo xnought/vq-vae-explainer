@@ -13,6 +13,8 @@
 	export let scaleApply = "row";
 	export let interp = d3.interpolateGreys;
 	export let showData = true;
+	export let shape = ["", ""];
+	export let shapeOffset = [0, 0];
 
 	// just to propagate upwards
 	export let h = height / rows;
@@ -81,4 +83,22 @@
 	$: if (ctx && showData === false) clearCanvas();
 </script>
 
-<canvas bind:this={canvasEl} {width} {height} />
+<div style="position: relative;">
+	<canvas bind:this={canvasEl} {width} {height} />
+	<div
+		style="position: absolute; bottom: {30}px; left: -{shapeOffset[1] +
+			45}px; font-size: 8px;"
+		class="code min"
+	>
+		<div style="transform: rotate(-90deg);">
+			{shape[0]}
+		</div>
+	</div>
+	<div
+		style="position: absolute; bottom: -{shapeOffset[0] +
+			15}px; left: 0; font-size: 8px"
+		class="code min"
+	>
+		{shape[1]}
+	</div>
+</div>

@@ -92,7 +92,7 @@
 	let codebookHeight = 150;
 	let prismSquare = 150;
 	let prismSmallerSquare = 100;
-	let expanded = false;
+	let expanded = true;
 	let qvisSquare = 150;
 	let linkedCode;
 
@@ -636,13 +636,5 @@
 	svg,
 	foreignObject {
 		overflow: visible;
-	}
-	.out {
-		fill: hsla(39, 100%, 50%, 0.5);
-		color: hsla(39, 100%, 50%, 0.5);
-	}
-	.min {
-		fill: rgba(255, 255, 255, 0.5);
-		color: rgba(255, 255, 255, 0.5);
 	}
 </style>

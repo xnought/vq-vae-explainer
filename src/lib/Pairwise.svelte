@@ -35,6 +35,14 @@
 </script>
 
 <div style="position: relative;{style}">
+	<Matrix
+		data={distances}
+		{width}
+		{height}
+		bind:w
+		bind:h
+		shape={["num_features ->", "num_embed ->"]}
+	/>
 	<svg
 		style="position: absolute; left: 0; top: 0;"
 		{width}
@@ -71,5 +79,4 @@
 			{/each}
 		{/if}
 	</svg>
-	<Matrix data={distances} {width} {height} bind:w bind:h />
 </div>

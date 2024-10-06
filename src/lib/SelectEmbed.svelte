@@ -38,6 +38,14 @@
 </script>
 
 <div style="position: relative;{style}">
+	<Matrix
+		data={quantized}
+		{width}
+		{height}
+		bind:w
+		bind:h
+		shape={["num_features ->", "embed_dim ->"]}
+	/>
 	<svg
 		{width}
 		{height}
@@ -61,6 +69,4 @@
 			{/each}
 		{/if}
 	</svg>
-
-	<Matrix data={quantized} {width} {height} bind:w bind:h />
 </div>

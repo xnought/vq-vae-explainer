@@ -57,3 +57,12 @@ svg text {
 		opacity: 1;
 	}
 }
+
+.out {
+	fill: hsla(39, 100%, 50%, 0.5);
+	color: hsla(39, 100%, 50%, 0.5);
+}
+.min {
+	fill: rgba(255, 255, 255, 0.5);
+	color: rgba(255, 255, 255, 0.5);
+}

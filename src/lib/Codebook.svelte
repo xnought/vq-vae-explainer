@@ -17,6 +17,16 @@
 </script>
 
 <div style="position: relative; width: {width}px; height: {height}px;">
+	<Matrix
+		shape={["embed_dim ->", "num_embed ->"]}
+		shapeOffset={[12, -8]}
+		{width}
+		{height}
+		data={embeddings}
+		bind:w
+		bind:h
+		showData={showMatrix}
+	/>
 	<svg
 		{width}
 		{height}
@@ -53,14 +63,6 @@
 			{/each}
 		{/if}
 	</svg>
-	<Matrix
-		{width}
-		{height}
-		data={embeddings}
-		bind:w
-		bind:h
-		showData={showMatrix}
-	/>
 </div>
 
 <style>
