@@ -59,7 +59,9 @@ def select_columns(matrix, col_idxs): return tf.transpose(tf.gather(matrix, col_
 		const lines = el.querySelectorAll(".line");
 		for (const line of lines) {
 			line.classList.add("not-focused");
+			line.setAttribute("style", `float: left; width: 100%;`);
 		}
+
 		for (const linked of linkedLines) {
 			if (Array.isArray(linked.selection)) {
 				for (
