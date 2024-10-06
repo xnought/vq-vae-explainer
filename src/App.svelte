@@ -24,6 +24,7 @@
 	import { color } from "./color";
 	import Pointer from "./lib/Pointer.svelte";
 	import TSpanIdxs from "./lib/TSpanIdxs.svelte";
+	import LinkedCode from "./lib/LinkedCode.svelte";
 
 	const inputOutputCanvasSize = 300;
 	const images = [1, 2, 3, 4, 5, 7].map((d) => `images/${d}.png`);
@@ -90,7 +91,7 @@
 	let codebookHeight = 150;
 	let prismSquare = 150;
 	let prismSmallerSquare = 100;
-	let expanded = false;
+	let expanded = true;
 	let qvisSquare = 150;
 
 	// svg positioning
@@ -285,6 +286,14 @@
 
 		{#if expanded}
 			<g class="fade-in">
+				<foreignObject
+					x={inputX}
+					y={inputOutputCanvasSize + 150}
+					width={500}
+					height={800}
+				>
+					<LinkedCode width="500px" />
+				</foreignObject>
 				<text
 					x={reshapeFeaturesX}
 					y={reshapeFeaturesY + featuresHeight}
