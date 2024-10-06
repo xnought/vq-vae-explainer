@@ -93,6 +93,7 @@
 	let prismSmallerSquare = 100;
 	let expanded = true;
 	let qvisSquare = 150;
+	let linkedCode;
 
 	// svg positioning
 	$: inputX = 0;
@@ -163,6 +164,60 @@
 		}
 		updateCounter++;
 	}
+
+	$: linkedCodeRectPadding = 40;
+	function pad(obj) {
+		return {
+			width: obj.width + linkedCodeRectPadding,
+			height: obj.height + linkedCodeRectPadding,
+			x: obj.x - linkedCodeRectPadding / 2,
+			y: obj.y - linkedCodeRectPadding / 2,
+		};
+	}
+	$: linkedCodeRects = {
+		undefined: {
+			width: 0,
+			height: 0,
+			x: 0,
+			y: 0,
+		},
+		features: pad({
+			width: prismSquare,
+			height: prismSquare,
+			x: inPrismX,
+			y: inPrismY,
+		}),
+		fvecs: pad({
+			width: featuresWidth,
+			height: featuresHeight,
+			x: reshapeFeaturesX,
+			y: reshapeFeaturesY,
+		}),
+		embeddings: pad({
+			width: codebookWidth,
+			height: codebookHeight,
+			x: codebookX,
+			y: codebookY,
+		}),
+		dists_idxs: pad({
+			width: codebookWidth,
+			height: featuresHeight,
+			x: pairwiseX,
+			y: pairwiseY,
+		}),
+		qvecs: pad({
+			width: featuresWidth,
+			height: featuresHeight,
+			x: quantizedX,
+			y: quantizedY,
+		}),
+		quantized: pad({
+			width: prismSquare,
+			height: prismSquare,
+			x: outPrismX,
+			y: outPrismY,
+		}),
+	};
 </script>
 
 <Header />
@@ -239,6 +294,7 @@
 				<Pointer y={8} />
 			{/if}
 		</svg>
+
 		<Features
 			x={inPrismX}
 			y={inPrismY}
@@ -286,13 +342,20 @@
 
 		{#if expanded}
 			<g class="fade-in">
+				<rect
+					fill="none"
+					stroke="lightgrey"
+					{...linkedCodeRects[linkedCode]}
+					stroke-dasharray={5}
+				>
+				</rect>
 				<foreignObject
 					x={inputX}
 					y={inputOutputCanvasSize + 150}
 					width={500}
 					height={800}
 				>
-					<LinkedCode width="500px" />
+					<LinkedCode width="500px" bind:linkedCode />
 				</foreignObject>
 				<text
 					x={reshapeFeaturesX}

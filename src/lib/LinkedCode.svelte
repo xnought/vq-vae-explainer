@@ -39,7 +39,7 @@ class VectorQuantizer(tf.keras.layers.Layer):
 def cdist(a, b): return tf.reduce_sum(a**2, axis=-1, keepdims=True) + tf.reduce_sum(b**2, axis=-2, keepdims=True) - 2*tf.matmul(a, b)
 def select_columns(matrix, col_idxs): return tf.transpose(tf.gather(matrix, col_idxs, axis=-1))`;
 
-	export let curHighlight = undefined;
+	export let linkedCode = undefined;
 
 	let html = "";
 	let mounted = false;
@@ -70,7 +70,7 @@ def select_columns(matrix, col_idxs): return tf.transpose(tf.gather(matrix, col_
 					i++
 				) {
 					lines[i - 1].addEventListener("mouseenter", () => {
-						curHighlight = linked.name;
+						linkedCode = linked.name;
 					});
 					lines[i - 1].classList.remove("not-focused");
 				}
@@ -78,7 +78,7 @@ def select_columns(matrix, col_idxs): return tf.transpose(tf.gather(matrix, col_
 				lines[linked.selection - 1].addEventListener(
 					"mouseenter",
 					() => {
-						curHighlight = linked.name;
+						linkedCode = linked.name;
 					}
 				);
 				lines[linked.selection - 1].classList.remove("not-focused");
@@ -110,7 +110,7 @@ def select_columns(matrix, col_idxs): return tf.transpose(tf.gather(matrix, col_
 	let highlightHeight = 0;
 	let highlightStart = 0;
 
-	$: if (mounted) highlightLinked(curHighlight);
+	$: if (mounted) highlightLinked(linkedCode);
 </script>
 
 <div style="position: relative;">
@@ -119,7 +119,7 @@ def select_columns(matrix, col_idxs): return tf.transpose(tf.gather(matrix, col_
 	</div>
 	{#if highlightHeight !== 0 || highlightStart !== 0}
 		<div
-			style="position: absolute; width: {width}; height: {highlightHeight}px; left: 0; top: {highlightStart}px; outline: 1px dashed hsla(100, 0%, 65%, 0.5); background:hsla(100, 0%, 65%, 0.1); border-radius: 3px; transition: all 500ms ease-in-out;"
+			style="position: absolute; width: {width}; height: {highlightHeight}px; left: 0; top: {highlightStart}px; outline: 1px dashed hsla(100, 0%, 65%, 0.5); background:hsla(100, 0%, 65%, 0.1); border-radius: 3px; transition: all 500ms ease-in-out; pointer-events: none;"
 		>
 			<!--  -->
 		</div>
