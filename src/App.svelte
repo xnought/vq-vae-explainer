@@ -92,7 +92,7 @@
 	let codebookHeight = 150;
 	let prismSquare = 150;
 	let prismSmallerSquare = 100;
-	let expanded = true;
+	let expanded = false;
 	let qvisSquare = 150;
 	let linkedCode;
 
@@ -540,9 +540,18 @@
 				square={prismSmallerSquare}
 				colorOverrides={grabColorsForOutFeatures(idxs)}
 			/>
-			<text x={outPrismX} y={outPrismY + prismSquare + 18} class="qcode">
-				quantized
-			</text>
+			<foreignObject
+				x={outPrismX}
+				y={outPrismY + prismSquare}
+				width={prismSquare}
+				height={300}
+			>
+				<div class="qcode">quantized</div>
+				<div class="code" style="font-size: 12px;">
+					Reshape <span style="color: deepskyblue;">qvecs</span> like the
+					input features for the decoder.
+				</div>
+			</foreignObject>
 		{/if}
 
 		<g id="decoder">

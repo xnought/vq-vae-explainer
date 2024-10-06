@@ -46,7 +46,10 @@ def select_columns(matrix, col_idxs): return tf.transpose(tf.gather(matrix, col_
 	onMount(async () => {
 		html = await codeToHtml(code, {
 			lang,
-			theme: "aurora-x",
+			// theme: "aurora-x",
+			// theme: "houston",
+			// theme: "catppuccin-mocha",
+			theme: "ayu-dark",
 		});
 		el.innerHTML = html;
 		const out = el.querySelector("pre");
