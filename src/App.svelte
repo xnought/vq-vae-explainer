@@ -641,6 +641,8 @@
 			</Button>
 		</foreignObject>
 	</svg>
+
+	<!-- <Button on:click={() => console.table(tf.memory())}>Memory</Button> -->
 </main>
 
 <style>

@@ -16,16 +16,6 @@
 			}}
 		/>
 	{/each}
-	<div
-		class="s"
-		style="width: {width}px; height: {width}px; background: black; opacity: {selectedUrl ===
-		'clear'
-			? 1
-			: 0.4}; {selectedUrl === 'clear'
-			? 'box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.5);'
-			: ''};"
-		on:click={() => (selectedUrl = "clear")}
-	></div>
 </div>
 
 <style>
