@@ -558,10 +558,12 @@
 				height={300}
 			>
 				<div class="qcode">quantized</div>
-				<div class="code" style="font-size: 12px;">
-					Reshape <span style="color: deepskyblue;">qvecs</span> like the
-					input features for the decoder.
-				</div>
+				{#if expanded}
+					<div class="code" style="font-size: 12px;">
+						Reshape <span style="color: deepskyblue;">qvecs</span> like
+						the input features for the decoder.
+					</div>
+				{/if}
 			</foreignObject>
 		{/if}
 
