@@ -371,21 +371,22 @@
 				>
 					<LinkedCode width="500px" bind:linkedCode />
 				</foreignObject>
-				<text
+				<foreignObject
 					x={reshapeFeaturesX}
-					y={reshapeFeaturesY + featuresHeight}
+					y={reshapeFeaturesY +
+						featuresHeight +
+						linkedCodeRectPadding / 2}
+					width={featuresWidth}
+					height={200}
 					class="code"
 					style="font-size: 12px;"
 				>
-					<tspan dy="15" x={reshapeFeaturesX}
-						><tspan style="fill: darkviolet;">fvecs</tspan> = tf.reshape(</tspan
-					>
-					<tspan dy="15" x={reshapeFeaturesX + 20}>features,</tspan>
-					<tspan dy="15" x={reshapeFeaturesX + 20}
-						>(-1, embed_dim)</tspan
-					>
-					<tspan dy="15" x={reshapeFeaturesX}>)</tspan>
-				</text>
+					<div>
+						Reshape CNN features into rows of <span
+							style="color: darkviolet;">fvecs</span
+						>.
+					</div>
+				</foreignObject>
 				<foreignObject
 					x={reshapeFeaturesX}
 					y={reshapeFeaturesY}
@@ -404,23 +405,27 @@
 					{/if}
 				</foreignObject>
 
-				<text
+				<foreignObject
 					x={pairwiseX}
-					y={pairwiseY + featuresHeight}
+					y={pairwiseY + featuresHeight + linkedCodeRectPadding / 2}
 					class="code"
 					style="font-size: 12px;"
+					width={codebookWidth}
+					height={200}
 				>
-					<tspan dy="15" x={pairwiseX}
-						><tspan style="fill: crimson;">dists</tspan> = cdist(<tspan
-							style="fill: darkviolet;">fvecs</tspan
-						>, <tspan class="qcode">embeddings</tspan>)</tspan
-					>
-					<tspan dy="15" x={pairwiseX}
-						><TSpanIdxs /> = tf.argmin(<tspan style="fill: crimson;"
-							>dists</tspan
-						>, -1)</tspan
-					>
-				</text>
+					<div>
+						Find distance (<span style="color: crimson;">dists</span
+						>) from each row vector in
+						<span style="color: darkviolet;">fvecs</span> to every
+						column vector in <span class="qcode">embeddings</span>.
+						Then pick the closest embedding index/code (<span
+							style="color: #5B5EC7">i</span
+						><span style="color: #4C8ADB">d</span><span
+							style="color: #53AFD0">x</span
+						><span style="color: #85F279">s</span>) as the
+						discrete/quantized representation of the feature vector.
+					</div>
+				</foreignObject>
 				<foreignObject
 					x={pairwiseX}
 					y={pairwiseY}
@@ -440,21 +445,24 @@
 					{/if}
 				</foreignObject>
 
-				<text
+				<foreignObject
 					x={quantizedX}
-					y={quantizedY + featuresHeight}
+					y={quantizedY + featuresHeight + linkedCodeRectPadding / 2}
+					width={featuresWidth}
+					height={200}
 					class="code"
 					style="font-size: 12px;"
 				>
-					<tspan dy="15" x={quantizedX}
-						><tspan fill="yellow">qvecs</tspan> = select_embed(</tspan
-					>
-					<tspan dy="15" x={quantizedX + 20}><TSpanIdxs />,</tspan>
-					<tspan dy="15" x={quantizedX + 20} class="qcode"
-						>embeddings</tspan
-					>
-					<tspan dy="15" x={quantizedX}>)</tspan>
-				</text>
+					<div>
+						Take the full embedding representation for each closest <span
+							style="color: #5B5EC7">i</span
+						><span style="color: #4C8ADB">d</span><span
+							style="color: #53AFD0">x</span
+						><span style="color: #85F279">s</span> as
+						<span style="color: yellow">qvecs</span> to be decoded by
+						the decoder.
+					</div>
+				</foreignObject>
 				<foreignObject
 					x={quantizedX}
 					y={quantizedY}
@@ -502,22 +510,6 @@
 			<text x={outPrismX} y={outPrismY + prismSquare + 18} class="qcode">
 				quantized
 			</text>
-			{#if expanded}
-				{@const offsetX = outPrismX + 70}
-				<text
-					x={offsetX}
-					y={outPrismY + prismSquare + 3}
-					class="code"
-					style="font-size: 12px;"
-				>
-					<tspan dy="15" x={offsetX}> = tf.reshape(</tspan>
-					<tspan dy="15" x={offsetX + 20}
-						><tspan fill="yellow">qvecs</tspan>,</tspan
-					>
-					<tspan dy="15" x={offsetX + 20}>features.shape</tspan>
-					<tspan dy="15" x={offsetX}>)</tspan>
-				</text>
-			{/if}
 		{/if}
 
 		<g id="decoder">
