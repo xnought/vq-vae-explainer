@@ -92,7 +92,7 @@
 	let codebookHeight = 150;
 	let prismSquare = 150;
 	let prismSmallerSquare = 100;
-	let expanded = true;
+	let expanded = false;
 	let qvisSquare = 150;
 	let linkedCode;
 
