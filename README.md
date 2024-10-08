@@ -1,6 +1,6 @@
 <img src="public/logo.svg" width="400px">
 
-Interactive Vector Quantized Variational Autoencoder (VQ-VAE) running live in the browser:
+Interactive Vector-Quantized Variational Autoencoder (VQ-VAE) running live in the browser:
 
 <img src="https://xnought.github.io/vq-vae-explainer/favicon.svg" width="15px"/> https://xnought.github.io/vq-vae-explainer/
 

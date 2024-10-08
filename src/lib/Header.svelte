@@ -13,7 +13,7 @@
 				id="title-desc"
 				style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"
 			>
-				Interact with a <b>V</b>ector <b>Q</b>uantized
+				Interact with a <b>V</b>ector-<b>Q</b>uantized
 				<b>V</b>ariational <b>A</b>uto<b>e</b>ncoder in your browser!
 			</span>
 		</div>
