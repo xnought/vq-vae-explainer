@@ -1,6 +1,10 @@
-@misc{bertucci2024vq,
-  title = {{VQ-VAE Explainer}},
-  author = {Donald Bertucci and Duen Horng (Polo) Chau},
-  url = {https://xnought.github.io/vq-vae-explainer/},
-  year = {2024}
-}
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Bertucci"
+  given-names: "Donald"
+- family-names: "Chau"
+  given-names: "Duen Horng (Polo)"
+title: "VQ-VAE Explainer"
+date-released: 2024-10-09
+url: "https://xnought.github.io/vq-vae-explainer/"
