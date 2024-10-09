@@ -16,6 +16,17 @@ pnpm install
 pnpm dev
 ```
 
+## Cite
+
+```bibtex
+@misc{bertucci2024vq,
+  title = {{VQ-VAE Explainer}},
+  author = {Donald Bertucci and Duen Horng (Polo) Chau},
+  url = {https://xnought.github.io/vq-vae-explainer/},
+  year = {2024}
+}
+```
+
 ## References
 
 - https://keras.io/examples/generative/vq_vae/ (used for training)
