@@ -6,7 +6,7 @@ Interactive Vector-Quantized Variational Autoencoder (VQ-VAE) running live in th
 
 
 <a href="https://xnought.github.io/vq-vae-explainer/">
-  <img src="https://xnought.github.io/files/meta-vq-vae-explainer.jpg" width="500px" />
+  <video src="https://github.com/user-attachments/assets/29f53cdd-a367-4ef8-b6e2-fb70f24b61bd" />
 </a>
 
 ## Dev
